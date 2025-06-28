@@ -1,0 +1,8 @@
+What are the limitations of the Simple Factory Pattern, and how can these limitations 
+impact maintainability and scalability in large projects?
+Example:
+ Suppose you keep adding new vehicle types (Car, Bike, Truck) to a Vehicle Factory. 
+ The factory class grows huge and harder to maintain, 
+ violating the Open/Closed Principle because you have to modify the factory every time you add a new type. 
+ This makes scaling the system difficult.
+

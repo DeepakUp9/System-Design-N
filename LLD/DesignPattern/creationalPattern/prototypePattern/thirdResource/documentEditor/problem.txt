@@ -1,0 +1,5 @@
+Question:
+ What is the Prototype Design Pattern and when would you prefer it over creating new objects using constructors?
+Example Use-Case:
+ In a document editor, when a user clicks "New from Template,"
+ you can use a prototype (cloned) version of an existing document instead of building it from scratch every time.

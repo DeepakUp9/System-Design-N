@@ -1,0 +1,6 @@
+Question:
+ How can the Factory Method Pattern help in achieving Open/Closed Principle in your application design?
+Example Use-Case:
+ Suppose you’re building a shipping service that supports multiple carriers like FedEx, DHL, and UPS. 
+ Each carrier has its own API logic. Instead of modifying a single factory class, 
+ you can add new carrier factories by extending the base factory interface — enabling new types without changing existing logic.

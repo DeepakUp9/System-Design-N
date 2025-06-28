@@ -1,0 +1,2 @@
+package LLD.DesignPattern.creationalPattern.singleton.secondResource.singletonWithEnumImplementation.soltution;
+

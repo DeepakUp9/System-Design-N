@@ -1,0 +1,10 @@
+Question:
+ What is the Simple Factory Pattern, and how does it differ from the Factory Method Pattern? 
+ Can you give a simple example?
+Example:
+ In a notification system, you have different notification types — Email, SMS, and Push.
+  A Simple Factory class decides which notification object to create based on a type parameter, 
+  so the client doesn’t need to know the concrete classes.
+
+
+

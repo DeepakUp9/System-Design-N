@@ -1,0 +1,19 @@
+The Singleton Pattern is a design pattern that ensures a class has only one instance 
+and provides a global point of access to that instance.
+This pattern is used to control access to shared resources, manage state, and provide a single point of coordination in an application.
+
+Key Points:
+    Single Instance: Guarantees that only one instance of the class exists.
+    Global Access: Provides a static method to access the instance from anywhere in the application.
+    Lazy Initialization: The instance is created only when it is needed, optimizing resource usage.
+
+    This pattern is commonly used in scenarios such as configuration management, logging, and connection pooling.
+
+
+
+break singletone pattern ways
+  1. reflection api 
+  2. Deserialization
+  3. cloning
+
+  

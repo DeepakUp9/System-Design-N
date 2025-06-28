@@ -1,0 +1,29 @@
+@startuml
+interface Vehicle {
+    + move()
+}
+
+class Car implements Vehicle {
+    + move()
+}
+
+class Bike implements Vehicle {
+    + move()
+}
+
+class Truck implements Vehicle {
+    + move()
+}
+
+class simpleFactory {
+    + static simpleFactoryCreate(vehicle: String) : Vehicle
+}
+
+class Solution {
+    + main(args: String[])
+}
+
+simpleFactory ..> Vehicle : "dependency"
+Solution ..> simpleFactory : "dependency"
+
+@enduml

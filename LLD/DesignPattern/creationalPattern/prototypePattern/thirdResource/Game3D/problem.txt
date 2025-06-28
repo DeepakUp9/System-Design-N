@@ -1,0 +1,5 @@
+Question:
+ How does the Prototype Pattern help in improving performance when creating objects is expensive?
+Example Use-Case:
+ In a game, creating complex 3D enemy models with textures and behaviors is resource-intensive. 
+ Instead of recreating each enemy, you clone a prototype enemy object, which is faster and consumes less memory.

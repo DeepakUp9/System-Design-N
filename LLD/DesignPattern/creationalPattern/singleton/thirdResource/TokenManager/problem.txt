@@ -1,0 +1,7 @@
+Question:
+ How would you ensure thread safety in a Singleton implementation in a multi-threaded Spring Boot application?
+Example Use-Case:
+ In a financial transaction processing system, there's a TokenManager 
+ class responsible for storing and refreshing a bearer token from an external service. 
+ This class must be a Singleton to avoid duplicate token requests. Multiple threads might request the token simultaneously, 
+ so thread safety must be ensured.

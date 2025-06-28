@@ -1,0 +1,8 @@
+Question:
+ What challenges might arise when implementing deep vs shallow cloning in the Prototype Pattern? 
+ How would you address them in real-world scenarios?
+Example Use-Case:
+ You have a CustomerOrder object that contains a list of product references and nested shipping address. 
+ If you clone it for duplication, and only shallow copy is used, 
+ modifications to address or product list might affect the original. 
+ Deep cloning is necessary here to avoid unintended side-effects.

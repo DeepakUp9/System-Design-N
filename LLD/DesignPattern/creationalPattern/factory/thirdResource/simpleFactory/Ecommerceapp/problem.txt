@@ -1,0 +1,7 @@
+Question:
+ In what scenarios would you prefer using a Simple Factory over directly 
+ instantiating objects with constructors? Provide a real-world example.
+Example:
+ In an e-commerce app, when placing an order, the payment method varies (credit card, PayPal, wallet). 
+ Instead of clients creating payment objects directly, a Simple Factory handles object creation based on the payment method selected by the user, 
+ making the client code cleaner and more maintainable.

@@ -1,0 +1,8 @@
+Question:
+ You are developing a report generation system where different clients need custom report objects (with different headers, footers, content blocks). 
+ How would the Builder Pattern help in constructing such reports flexibly and cleanly?
+Example Use-Case:
+ Each client (internal team, external partner, regulatory body) has its own report format, 
+ but the structure is similar. 
+ You use a ReportBuilder that lets you specify custom header, footer, data section, charts, etc., 
+ and then build the final report in a consistent way — keeping flexibility without tightly coupling formats.

@@ -1,0 +1,8 @@
+Question:
+ In a Spring Boot application managing external configurations (like tokens or API keys), 
+ how would you use a Singleton to manage and refresh these values without causing stale data or race conditions?
+Example Use-Case:
+ You have a Singleton class CredentialManager that holds an API token fetched from a partner service. 
+ It needs to refresh the token every 30 minutes. 
+ During the refresh window, concurrent API calls might come in, 
+ so it must ensure the token is not null/stale and avoid race conditions when refreshing.

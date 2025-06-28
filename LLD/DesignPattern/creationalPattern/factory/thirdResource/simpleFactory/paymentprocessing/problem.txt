@@ -1,0 +1,7 @@
+Question:
+ Imagine you are building a payment processing system supporting multiple payment types (credit card, UPI, wallet). 
+ How would you design a Simple Factory to handle the creation of different payment processors? How would you manage adding new payment types later without modifying the factory class?
+Example:
+ The Simple Factory receives a payment type identifier and returns the appropriate payment processor instance. 
+ To handle adding new payment types without modifying the factory, 
+ you might integrate a registry or configuration-based factory to register new payment processors dynamically.

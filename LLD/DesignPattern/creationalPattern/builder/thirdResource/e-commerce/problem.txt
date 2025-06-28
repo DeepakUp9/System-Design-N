@@ -1,0 +1,6 @@
+Question:
+ How does the Builder Pattern improve code readability and maintainability when dealing with complex objects?
+Example Use-Case:
+ In an e-commerce application, you have an Order object that contains customer info, 
+ a list of products, payment details, delivery options, and coupon codes. 
+ The builder pattern helps assemble these parts step-by-step, avoiding messy constructors or inconsistent states.

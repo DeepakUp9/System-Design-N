@@ -1,0 +1,26 @@
+Question:
+ In a plugin-based architecture where new types are added dynamically, 
+ how would the Factory Method Pattern be used to instantiate new plugin objects at runtime?
+Example Use-Case:
+ In an analytics dashboard application, different data source connectors (MySQL, MongoDB, Kafka) are plugins. 
+ Each plugin implements a factory method to create its own connector. As new plugins are introduced, 
+ they register their factory without changing the core logic, making the system extensible.
+
+
+             +------------------------+
+             |   DataConnector        |  <- Interface
+             +------------------------+
+                        ▲
+                        |
+     +------------------+--------------------+
+     |                  |                    |
+MySQLConnector   MongoDBConnector     KafkaConnector
+     ▲                  ▲                    ▲
+     |                  |                    |
++------------+   +--------------+   +----------------+
+| Factory    |   | Factory      |   | Factory        |
+| (MySQL)    |   | (MongoDB)    |   | (Kafka)        |
++------------+   +--------------+   +----------------+
+
+         All factories register themselves to:
+               PluginRegistry

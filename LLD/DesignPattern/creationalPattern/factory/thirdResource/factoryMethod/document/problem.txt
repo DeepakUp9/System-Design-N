@@ -1,0 +1,6 @@
+Question:
+ What is the Factory Method Pattern, and how is it different from the Simple Factory Pattern?
+Example Use-Case:
+ In a document editor application, different document types like Word, PDF, and Excel 
+ have different creation processes. Each document type has its own class that implements a createDocument() method. 
+ The Factory Method Pattern allows each subclass to define its own instantiation logic, instead of centralizing all creation logic in one place (as in Simple Factory).

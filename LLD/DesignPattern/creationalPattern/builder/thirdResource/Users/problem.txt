@@ -1,0 +1,5 @@
+Question:
+ What is the Builder Pattern, and when would you choose it over telescoping constructors or setters?
+Example Use-Case:
+ You are creating a User object in a system where some fields are mandatory (name, email) and others are optional (address, phone, profilePic). 
+ Using telescoping constructors leads to readability issues, and using setters breaks immutability. Builder provides a clean, readable way to construct such objects.

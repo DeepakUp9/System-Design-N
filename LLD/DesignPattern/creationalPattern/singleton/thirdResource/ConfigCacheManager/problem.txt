@@ -1,0 +1,9 @@
+Question:
+  What are the potential pitfalls of using Singleton in a distributed microservices environment and how can you mitigate them?
+Example Use-Case:
+  In a microservice deployed on Kubernetes with multiple pods, you use a ConfigCacheManager 
+  Singleton to cache configuration from a central config service. 
+  But each pod has its own JVM and hence, its own instance. This can lead to inconsistent config states across pods.
+Mitigation Approach:
+  Use an external distributed cache like Redis or a config server with listeners to synchronize state
+  across nodes instead of relying on a Singleton within the JVM only.

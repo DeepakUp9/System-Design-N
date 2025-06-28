@@ -1,0 +1,37 @@
+@startuml
+interface Logger {
+    + log(message: String): void
+}
+
+class ConsoleLogger {
+    + log(message: String): void
+}
+
+class FileLogger {
+    - filePath: String
+    + FileLogger(filePath: String)
+    + log(message: String): void
+}
+
+class DatabaseLogger {
+    - dbConnection: String
+    + DatabaseLogger(dbConnection: String)
+    + log(message: String): void
+}
+
+class LoggerFactory {
+    + getLogger(type: String, dependency: String): Logger
+}
+
+class LoggerFactoryDemo {
+    + main(args: String[]): void
+}
+
+Logger <|.. ConsoleLogger
+Logger <|.. FileLogger
+Logger <|.. DatabaseLogger
+
+LoggerFactory ..> Logger : "dependency"
+
+LoggerFactoryDemo ..> LoggerFactory : "dependency"
+@enduml

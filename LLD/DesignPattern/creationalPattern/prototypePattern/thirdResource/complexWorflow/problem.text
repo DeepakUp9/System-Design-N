@@ -1,0 +1,8 @@
+Question:
+ Imagine you're building a workflow automation tool where users can create and clone existing workflows (with tasks, conditions, and triggers). 
+ How would the Prototype Pattern help here, and what would you need to watch out for while cloning?
+Example Use-Case:
+ Each workflow can be complex, containing nested tasks and dynamic rules. 
+ Using the Prototype Pattern, users can duplicate workflows quickly, 
+ modify them independently, and avoid recreating everything manually — 
+ but you must ensure that internal object references (like task dependencies) are correctly cloned and not shared across instances.

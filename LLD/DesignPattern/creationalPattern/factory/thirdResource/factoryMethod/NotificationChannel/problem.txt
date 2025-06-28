@@ -1,0 +1,7 @@
+Question:
+ You're building a notification service with different types of channels (Email, SMS, Slack). 
+ How would you use the Factory Method Pattern to create channel-specific notification handlers, 
+ and allow future extension (like WhatsApp) without modifying existing code?
+Example Use-Case:
+ Each channel (Email, SMS, Slack) has its own class that extends a NotificationFactory and overrides a method like createNotifier() to return a channel-specific notifier. When a new channel (like WhatsApp) is added, a new factory subclass is created. 
+ The core logic doesn’t change — you just plug in the new factory.

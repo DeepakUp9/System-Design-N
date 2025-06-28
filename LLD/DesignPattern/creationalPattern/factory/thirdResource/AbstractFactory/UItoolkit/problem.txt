@@ -1,0 +1,6 @@
+Question:
+ What is the Abstract Factory Pattern, and how does it differ from the Factory Method Pattern?
+Example Use-Case:
+ You are designing a UI toolkit that supports multiple operating systems (Windows, Mac, Linux). 
+ Each OS has its own style of buttons, checkboxes, and dropdowns. 
+ An Abstract Factory can provide families of related UI components without specifying their concrete classes.
