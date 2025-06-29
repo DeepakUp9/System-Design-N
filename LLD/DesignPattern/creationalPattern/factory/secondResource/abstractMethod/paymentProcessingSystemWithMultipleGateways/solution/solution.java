@@ -1,4 +1,4 @@
-package creationalPattern.factory.abstractMethod.paymentProcessingSystemWithMultipleGateways.solution;
+package LLD.DesignPattern.creationalPattern.factory.secondResource.abstractMethod.paymentProcessingSystemWithMultipleGateways.solution;
 
 interface CreditCardProcessor {
     void printCreditCardPayment();

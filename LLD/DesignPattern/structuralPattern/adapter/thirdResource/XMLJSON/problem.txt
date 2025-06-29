@@ -1,0 +1,8 @@
+Question:
+ You're building a Spring Boot microservice that consumes a third-party API returning XML, but your system uses JSON objects. 
+ How would the Adapter Pattern help you integrate this API without changing your internal models?
+Example Use-Case:
+ You implement an adapter class that takes the third-party XML response, parses it, and 
+ converts it into your internal JSON-compatible DTO — making the external system "look like" your internal system to the rest of your app.
+
+ 

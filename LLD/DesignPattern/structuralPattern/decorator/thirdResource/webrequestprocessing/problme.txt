@@ -1,0 +1,6 @@
+Question:
+ What are some potential pitfalls or performance issues when overusing the Decorator Pattern in a large-scale system?
+Example Use-Case:
+ In a web request processing pipeline (like a filter chain),
+  you might wrap request handlers in multiple decorators for logging, authentication, rate limiting, etc. 
+  Overuse or poor management of the chain can lead to deep nesting, making debugging and maintenance harder.

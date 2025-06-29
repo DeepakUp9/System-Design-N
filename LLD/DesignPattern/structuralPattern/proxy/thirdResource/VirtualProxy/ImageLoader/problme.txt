@@ -1,0 +1,5 @@
+Question:
+ What is the Proxy Design Pattern, and how does it differ from the Decorator Pattern?
+Example Use-Case:
+ You have a large image object that takes time and memory to load. 
+ ou use a proxy that delays the actual image loading until it’s really needed — known as a Virtual Proxy.

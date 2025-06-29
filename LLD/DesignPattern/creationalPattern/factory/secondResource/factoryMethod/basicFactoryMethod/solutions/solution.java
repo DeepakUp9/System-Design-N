@@ -1,4 +1,4 @@
-package creationalPattern.factory.factoryMethod.basicFactoryMethod.solutions;
+package LLD.DesignPattern.creationalPattern.factory.secondResource.factoryMethod.basicFactoryMethod.solutions;
 
 interface Payment {
     double processPayment(float amount);

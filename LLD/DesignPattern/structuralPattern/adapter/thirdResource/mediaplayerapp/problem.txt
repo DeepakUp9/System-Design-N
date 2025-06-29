@@ -1,0 +1,6 @@
+Question:
+ What is the Adapter Design Pattern, and when would you use it in a real-world application?
+Example Use-Case:
+ You're building a media player app that plays audio files. 
+ You have a new class that plays MP4 files but your system expects an MP3 player interface. 
+ You create an adapter to make the MP4 player compatible with the existing system.

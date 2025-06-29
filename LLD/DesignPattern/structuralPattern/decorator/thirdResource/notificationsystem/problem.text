@@ -1,0 +1,7 @@
+Question:
+ Imagine you’re building a notification system that sends alerts via different channels (email, SMS, Slack). 
+ How would you use the Decorator Pattern to add cross-cutting concerns like logging, retry logic, or formatting to these notifications dynamically?
+Example Use-Case:
+ You start with a base Notification class, then use decorators to 
+ layer features like RetryableNotification, FormattedNotification, or LoggedNotification, 
+ allowing combinations like "formatted + logged + email" without changing the core notification classes.

@@ -1,0 +1,5 @@
+Question:
+ How does the Bridge Pattern promote loose coupling and extensibility in software design?
+Example Use-Case:
+ In a messaging app, message types (text, image, video) are separated from delivery channels (SMS, Email, Push). 
+ The Bridge Pattern lets you mix and match message types with delivery mechanisms without creating a class for every combination.

@@ -1,0 +1,6 @@
+Question:
+ How does the Template Method Pattern promote code reuse and reduce duplication in algorithms with fixed structures?
+Example Use-Case:
+ In a report generation tool, the overall flow—gather data, format content, export to file—is constant across all report types. 
+ Only the data-gathering and formatting logic changes. 
+ Template Method centralizes the shared logic.

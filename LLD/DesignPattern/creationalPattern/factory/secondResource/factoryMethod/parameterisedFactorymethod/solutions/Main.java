@@ -1,4 +1,4 @@
-package creationalPattern.factory.factoryMethod.parameterisedFactorymethod.solutions;
+package LLD.DesignPattern.creationalPattern.factory.secondResource.factoryMethod.parameterisedFactorymethod.solutions;
 
 import java.util.Map;
 import java.util.HashMap;

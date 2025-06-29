@@ -1,0 +1,5 @@
+Question:
+ How can the Proxy Pattern be used to add access control or security in an application?
+Example Use-Case:
+ In a document management system, an AdminProxy can restrict access to certain operations (like delete or update) 
+ based on the user’s role, acting as a Protection Proxy between the client and the real document handler.

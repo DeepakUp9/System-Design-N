@@ -1,0 +1,6 @@
+Question:
+ You’re developing a device control system where devices (TV, AC, Light) can be controlled via different interfaces (Remote, Mobile App, Voice Assistant). 
+ How would the Bridge Pattern help you manage this design flexibly?
+Example Use-Case:
+ Bridge the abstraction (Device) with implementations (Control interfaces) so new devices and control methods can be added independently — e.g., 
+ adding a new device doesn’t require changes to control implementations and vice versa.

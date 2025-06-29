@@ -1,0 +1,6 @@
+Question:
+ How does the Decorator Pattern support the Open/Closed Principle in object-oriented design?
+Example Use-Case:
+ In a file I/O system, you start with a basic file reader. 
+ Then, decorators are used to add additional features like buffering, encryption, or compression, 
+ without modifying the original reader class.

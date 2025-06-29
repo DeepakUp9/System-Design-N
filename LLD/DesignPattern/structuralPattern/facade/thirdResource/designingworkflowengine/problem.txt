@@ -1,0 +1,6 @@
+Question:
+ You’re designing a workflow engine where each task interacts with multiple services (e.g., logging, validation, database, external APIs). How would the Facade Pattern help in making task execution simpler and reusable?
+Example Use-Case:
+ Each task can call a WorkflowTaskFacade that encapsulates 
+ ll dependencies internally — logging, validation, persistence, and event publishing — allowing developers to 
+ execute tasks without worrying about the underlying details.

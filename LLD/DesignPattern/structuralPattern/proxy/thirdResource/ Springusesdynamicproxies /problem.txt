@@ -1,0 +1,5 @@
+Question:
+ What are the pros and cons of using Dynamic Proxies in frameworks like Spring AOP or Hibernate?
+Example Use-Case:
+ Spring uses dynamic proxies for method-level features like @Transactional. 
+ This allows behavior like transaction management, logging, or caching to be wrapped around actual service calls — without modifying the core logic.

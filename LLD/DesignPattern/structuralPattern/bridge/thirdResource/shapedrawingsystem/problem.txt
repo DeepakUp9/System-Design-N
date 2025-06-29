@@ -1,0 +1,6 @@
+Question:
+ What is the Bridge Design Pattern, and how is it different from simple inheritance?
+Example Use-Case:
+ You’re designing a shape-drawing system where shapes (like Circle, Rectangle) can be drawn in different 
+ rendering styles (like raster or vector). The Bridge Pattern helps decouple shape abstraction from 
+ rendering implementation so both can evolve independently.

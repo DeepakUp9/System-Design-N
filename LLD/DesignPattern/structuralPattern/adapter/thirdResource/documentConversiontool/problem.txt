@@ -1,0 +1,9 @@
+Question:
+ What are the differences between Object Adapter and Class Adapter in the Adapter Pattern? 
+ When would you prefer one over the other?
+Example Use-Case:
+ In a document conversion tool, you might use a class adapter when you control the class   
+ hierarchy and can use inheritance. But if the target or adaptee classes are third-party libraries, 
+ you use an object adapter (via composition) for flexibility and loose coupling.
+
+ 

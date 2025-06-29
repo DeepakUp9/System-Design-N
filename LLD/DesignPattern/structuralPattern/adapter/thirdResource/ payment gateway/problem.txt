@@ -1,0 +1,5 @@
+Question:
+ How does the Adapter Pattern help in integrating legacy systems with new codebases?
+Example Use-Case:
+ You’re migrating to a new payment gateway, but your existing billing module expects the old gateway's interface. 
+ An adapter can bridge the new gateway’s API to match the expected legacy format — avoiding changes to core billing logic.

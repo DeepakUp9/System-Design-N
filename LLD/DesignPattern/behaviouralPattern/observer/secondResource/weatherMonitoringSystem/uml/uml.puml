@@ -1,0 +1,42 @@
+interface WeatherData {
+    +addObserver(displayObserver: DisplayObserver) : void
+    +removeObserver(displayObserver: DisplayObserver) : void
+    +notifyAllObservers() : void
+    +setData(temp: int, humidity: int, location: String) : void
+    +getTemperature() : int
+    +getHumidity() : int
+    +getLocation() : String
+}
+
+class WeatherDataImpl {
+    -temp: int
+    -humidity: int
+    -location: String
+    -observers: List<DisplayObserver>
+    +addObserver(displayObserver: DisplayObserver) : void
+    +removeObserver(displayObserver: DisplayObserver) : void
+    +notifyAllObservers() : void
+    +setData(temp: int, humidity: int, location: String) : void
+    +getTemperature() : int
+    +getHumidity() : int
+    +getLocation() : String
+}
+
+interface DisplayObserver {
+    +update(weatherData: WeatherData) : void
+}
+
+class MobileDisplay {
+    +update(weatherData: WeatherData) : void
+}
+
+class DesktopDisplay {
+    +update(weatherData: WeatherData) : void
+}
+
+
+WeatherData <|.. WeatherDataImpl
+DisplayObserver <|.. MobileDisplay
+DisplayObserver <|.. DesktopDisplay
+WeatherDataImpl o--> "0..*" DisplayObserver : observers
+DisplayObserver ..> WeatherData : depends on

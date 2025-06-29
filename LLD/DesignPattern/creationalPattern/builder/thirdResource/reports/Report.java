@@ -1,4 +1,4 @@
-package CreationalDesignPattern.Builder.report;
+package LLD.DesignPattern.creationalPattern.builder.thirdResource.reports;
 
 import java.util.List;
 
@@ -6,9 +6,9 @@ import java.util.List;
 public class Report {
     private String header;
     private String footer;
-    private List<String>setContentBlock;
+    private List<String>contenBlock;
 
-    private Report(reportBuilder rBuilder){
+    private Report(ReportBuilder rBuilder){
         this.header = rBuilder.header;
         this.footer = rBuilder.footer;
         this.contenBlock = rBuilder.contenBlock;

@@ -1,0 +1,5 @@
+Question:
+ What design challenges can arise without using the Bridge Pattern when dealing with multiple dimensions of variation in a system?
+Example Use-Case:
+ In a reporting tool, you have multiple report types (summary, detailed) and multiple export formats (PDF, Excel, HTML). 
+ Without Bridge, you might end up with a combinatorial explosion of classes like SummaryPdfReport, DetailedHtmlReport, etc.

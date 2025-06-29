@@ -1,4 +1,4 @@
-package creationalPattern.factory.factoryMethod.factoryMethodWithDIandRegistry.solutions;
+package LLD.DesignPattern.creationalPattern.factory.secondResource.factoryMethod.factoryMethodWithDIandRegistry.solutions;
 
 import java.util.*;
 

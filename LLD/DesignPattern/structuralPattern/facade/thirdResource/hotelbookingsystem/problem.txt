@@ -1,0 +1,5 @@
+Question:
+ What is the Facade Design Pattern, and how does it help simplify complex systems?
+Example Use-Case:
+ In a hotel booking system, the facade provides a simple interface for users to book a room, 
+ while internally it interacts with room inventory, payment gateway, and notification services.

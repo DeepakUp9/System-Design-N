@@ -1,0 +1,6 @@
+Question:
+ How does the Facade Pattern improve the maintainability and readability of a large subsystem?
+Example Use-Case:
+ In an e-commerce platform, instead of calling inventory, pricing, discount, and shipping services separately 
+ from the frontend, a single OrderServiceFacade coordinates all these operations in the backend, 
+ exposing a clean method like placeOrder().

@@ -1,4 +1,4 @@
-package creationalPattern.factory.factoryMethod.factoryMethodWithMultipleImplementation.solution;
+package LLD.DesignPattern.creationalPattern.factory.secondResource.factoryMethod.factoryMethodWithMultipleImplementation.solution;
 
 interface DatabaseConnection{
     boolean connect();

@@ -1,0 +1,6 @@
+Question:
+ What is the Decorator Design Pattern, and how is it different from subclassing (inheritance)?
+Example Use-Case:
+ In a coffee shop billing system, you have a basic coffee class. 
+ Add-ons like milk, sugar, or whipped cream are added using decorators, 
+ allowing dynamic combination of features without creating a subclass for every combination.
