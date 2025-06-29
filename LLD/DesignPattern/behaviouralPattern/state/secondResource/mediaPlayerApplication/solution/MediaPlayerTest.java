@@ -2,9 +2,7 @@ package LLD.DesignPattern.behaviouralPattern.state.secondResource.mediaPlayerApp
 
  interface MediaPlayerState {
     void play(MediaPlayerContext context);
-
     void pause(MediaPlayerContext context);
-
     void stop(MediaPlayerContext context);
 }
 
