@@ -1,6 +1,6 @@
-package testLLCode.Decoratorpattern.coffeeshopbillingsystem.SugarDecorator;
+package LLD.DesignPattern.structuralPattern.decorator.thirdResource.coffeeshopbillingsystem.SugarDecorator;
+import LLD.DesignPattern.structuralPattern.decorator.thirdResource.coffeeshopbillingsystem.Coffee.Coffee;
 
-import testLLCode.Decoratorpattern.coffeeshopbillingsystem.Coffee.Coffee;
 
 public class SugarFree extends SugarDecorator{
 

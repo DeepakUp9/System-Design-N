@@ -1,6 +1,6 @@
-package structuralPattern.decoratorPattern.PizzaDecorator.solution.decorator;
+package LLD.DesignPattern.structuralPattern.decorator.secondResource.PizzaDecorator.solution.decorator;
 
-import structuralPattern.decoratorPattern.PizzaDecorator.solution.plainPizza.basePizza;
+import LLD.DesignPattern.structuralPattern.decorator.secondResource.PizzaDecorator.solution.plainPizza.basePizza;
 
 public class Olive extends Decorator {
 

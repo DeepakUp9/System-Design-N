@@ -1,8 +1,8 @@
-package structuralPattern.decoratorPattern.PizzaDecorator.solution;
+package LLD.DesignPattern.structuralPattern.decorator.secondResource.PizzaDecorator.solution;
 
-import structuralPattern.decoratorPattern.PizzaDecorator.solution.decorator.Cheese;
-import structuralPattern.decoratorPattern.PizzaDecorator.solution.decorator.Olive;
-import structuralPattern.decoratorPattern.PizzaDecorator.solution.plainPizza.ThickCrust;
+import LLD.DesignPattern.structuralPattern.decorator.secondResource.PizzaDecorator.solution.decorator.Cheese;
+import LLD.DesignPattern.structuralPattern.decorator.secondResource.PizzaDecorator.solution.decorator.Olive;
+import LLD.DesignPattern.structuralPattern.decorator.secondResource.PizzaDecorator.solution.plainPizza.ThickCrust;
 
 public class solution {
     public static void main(String[] args) {

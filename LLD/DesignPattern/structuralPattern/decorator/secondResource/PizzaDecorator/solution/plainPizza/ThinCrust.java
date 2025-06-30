@@ -1,4 +1,4 @@
-package structuralPattern.decoratorPattern.PizzaDecorator.solution.plainPizza;
+package LLD.DesignPattern.structuralPattern.decorator.secondResource.PizzaDecorator.solution.plainPizza;
 
 public class ThinCrust extends basePizza{
     public ThinCrust(){

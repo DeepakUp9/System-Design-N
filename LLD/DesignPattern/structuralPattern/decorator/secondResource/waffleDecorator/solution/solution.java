@@ -1,12 +1,11 @@
-package structuralPattern.decoratorPattern.waffleDecorator.solution;
+package LLD.DesignPattern.structuralPattern.decorator.secondResource.waffleDecorator.solution;
 
-import structuralPattern.decoratorPattern.waffleDecorator.solution.BaseWaffle.BaseWaffleClass;
-import structuralPattern.decoratorPattern.waffleDecorator.solution.BaseWaffle.IndianBase;
-import structuralPattern.decoratorPattern.waffleDecorator.solution.Decorator.ChocolateDecorator.CaramelChocolate;
-import structuralPattern.decoratorPattern.waffleDecorator.solution.Decorator.ChocolateDecorator.DarkChocolate;
-import structuralPattern.decoratorPattern.waffleDecorator.solution.Decorator.FruitDecorator.AppleDecorator;
-import structuralPattern.decoratorPattern.waffleDecorator.solution.Decorator.FruitDecorator.BananaDecorator;
-
+import LLD.DesignPattern.structuralPattern.decorator.secondResource.waffleDecorator.solution.BaseWaffle.IndianBase;
+import LLD.DesignPattern.structuralPattern.decorator.secondResource.waffleDecorator.solution.Decorator.ChocolateDecorator.CaramelChocolate;
+import LLD.DesignPattern.structuralPattern.decorator.secondResource.waffleDecorator.solution.Decorator.ChocolateDecorator.DarkChocolate;
+import LLD.DesignPattern.structuralPattern.decorator.secondResource.waffleDecorator.solution.Decorator.FruitDecorator.AppleDecorator;
+import LLD.DesignPattern.structuralPattern.decorator.secondResource.waffleDecorator.solution.Decorator.FruitDecorator.BananaDecorator;
+import LLD.DesignPattern.structuralPattern.decorator.secondResource.waffleDecorator.solution.BaseWaffle.BaseWaffleClass;
 public class solution {
     public static void main(String[] args) {
         BaseWaffleClass base = new IndianBase();
