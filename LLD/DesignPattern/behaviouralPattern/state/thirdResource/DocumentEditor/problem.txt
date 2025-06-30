@@ -1,0 +1,5 @@
+Question:
+ What is the State Design Pattern, and how does it help manage object behavior based on internal state changes?
+Example Use-Case:
+ In a document editor, a document can be in states like Draft, Review, or Published. 
+ The allowed actions (like edit, comment, publish) depend on its current state.
