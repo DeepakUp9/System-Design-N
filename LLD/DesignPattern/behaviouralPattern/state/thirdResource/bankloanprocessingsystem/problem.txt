@@ -1,0 +1,6 @@
+Question:
+ What are the challenges of implementing the State Pattern in large systems with many interdependent states, 
+ and how would you manage them?
+Example Use-Case:
+ In a bank loan processing system, the loan goes through various interlinked states like Verified, Approved, Disbursed, Rejected.
+  Managing state transitions and validation logic can become complex and might require using a state machine framework or transition map.

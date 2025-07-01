@@ -1,4 +1,4 @@
-package designPattern.StateDesignPattern.DocumentEditor;
+package LLD.DesignPattern.behaviouralPattern.state.thirdResource.DocumentEditor;
 
 public class DocumentEditor {
 

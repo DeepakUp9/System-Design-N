@@ -1,0 +1,5 @@
+Question:
+ How does the State Pattern differ from using simple conditional logic (if-else or switch statements) for managing behavior?
+Example Use-Case:
+ In an order management system, orders can be in Placed, Shipped, Delivered, or Cancelled states.
+ Using state classes instead of conditionals avoids clutter and makes state transitions cleaner and more testable.
