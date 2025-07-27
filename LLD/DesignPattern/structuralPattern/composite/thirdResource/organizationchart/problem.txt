@@ -1,0 +1,5 @@
+Question:
+ How does the Composite Pattern simplify operations on hierarchical or tree-like structures in real-world applications?
+Example Use-Case:
+ In an organization chart, both individual employees and departments (which contain multiple employees) 
+ implement a common interface, allowing operations like printDetails() to be performed on both uniformly.

@@ -1,0 +1,5 @@
+Question:
+ How would you use the Command Pattern to design a task scheduler that queues and executes operations at specific times or under certain conditions?
+Example Use-Case:
+ In a batch processing system, each job (e.g., generate report, send notification, backup DB) is encapsulated as a command. 
+ These are scheduled and executed by a job runner that doesn't need to know the specifics of the job logic.

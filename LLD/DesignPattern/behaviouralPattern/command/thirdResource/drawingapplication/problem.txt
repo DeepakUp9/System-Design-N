@@ -1,0 +1,5 @@
+Question:
+ How can the Command Pattern be used to implement features like undo/redo or operation queuing?
+Example Use-Case:
+ In a drawing application, every shape-drawing action is a command. 
+ These are stored in a history stack, enabling the user to undo or redo previous actions without re-executing business logic directly.

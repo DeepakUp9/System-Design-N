@@ -1,4 +1,4 @@
-package LLD.DesignPattern.creationalPattern.singleton.thirdResource.TokenManager.Eager;
+package DesignPattern.creationalPattern.singleton.thirdResource.TokenManager.Lazy;
 
 
 import java.time.Instant;
@@ -65,7 +65,10 @@ class PaymentProcessor {
         System.out.println("Using token: " + token);
     }
 
-    public static void main(String[] args) {
+}
+
+class Solution {
+     public static void main(String[] args) {
         PaymentProcessor processor = new PaymentProcessor();
         processor.process();
     }

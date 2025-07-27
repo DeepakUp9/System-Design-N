@@ -1,0 +1,7 @@
+Question:
+ What challenges can arise when using the Composite Pattern in systems that require different 
+ behaviors for leaf and composite nodes? How would you handle them?
+Example Use-Case:
+ In a UI framework, components like buttons (leaves) and panels (composites) both support render(). 
+ However, panels need to render all child components recursively, while buttons don’t. 
+ Ensuring correct delegation and avoiding unnecessary abstraction can be tricky.

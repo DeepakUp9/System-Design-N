@@ -1,33 +1,40 @@
-package LLD.DesignPattern.creationalPattern.singleton.thirdResource.Logger.Lazy;
+package DesignPattern.creationalPattern.singleton.thirdResource.Logger.Lazy;
 
 
 class Logger {
-
-    private static Logger logger = new Logger();
+    private static Logger logger;
 
     private Logger(){
-        if(logger != null) throw new RuntimeException("Trying to break the singleton class");
+      if(logger != null) throw new RuntimeException("Trying to break the singleton class");
     }
 
     public static Logger getInstance(){
+      if(logger == null){
+        synchronized(Logger.class){
+          if(logger == null){
+            return logger = new Logger();
+          }
+        }
+      }
       return logger;
     }
 
     public void log(String message){
-        System.out.println("logger message :"+ message);
+      System.out.println("logger message :"+ message);
     }
-
-
 }
 
-
-class Solution {
+public class Solution{
     public static void main(String [] args){
-        Logger obj = Logger.getInstance();
-        Logger obj1 = Logger.getInstance();
-        System.out.println(obj.hashCode());
-        System.out.println(obj1.hashCode());
-        obj.log("Network error");
+      Logger obj1 = Logger.getInstance();
+      Logger obj2 = Logger.getInstance();
+      System.out.println(obj1.hashCode());
+      System.out.println(obj2.hashCode());
+      obj1.log("database connection...");
 
+      //there are 3way to break this
+      //1. reflection api
+      //2. serialization/deserialization
+      //3. ENUM
     }
 }

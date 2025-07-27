@@ -1,0 +1,6 @@
+Question:
+ You’re building a microservice that needs to support dynamic execution of business operations like “Block User,” “Send Email,” or “Generate Invoice” based on configuration. 
+ How would the Command Pattern help in designing a flexible and extensible system?
+Example Use-Case:
+ Each operation is implemented as a command object. 
+ Based on external configuration or input, the system dynamically instantiates and executes the appropriate command — allowing for extensibility without changing the core orchestration logic.

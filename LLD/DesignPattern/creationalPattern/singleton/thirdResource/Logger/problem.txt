@@ -1,0 +1,8 @@
+Question:
+ What is the Singleton Design Pattern, and why is it used in real-world applications? Can you give a simple use case?
+Example Use-Case:
+ You have a Logger class in your Spring Boot application that writes logs to a file. 
+ You want to ensure that only one instance of Logger exists throughout the application to 
+ avoid file write conflicts and ensure consistent logging.
+
+ 

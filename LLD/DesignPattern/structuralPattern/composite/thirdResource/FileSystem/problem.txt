@@ -1,0 +1,6 @@
+Question:
+ What is the Composite Design Pattern, and how does it allow you to treat individual objects and compositions uniformly?
+Example Use-Case:
+ In a file system, files and folders can be treated the same way. 
+ A folder may contain files or other folders, and operations like size calculation or deletion 
+ can be applied recursively using the same interface.

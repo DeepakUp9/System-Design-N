@@ -1,0 +1,5 @@
+Question:
+ What is the Command Design Pattern, and how does it help in decoupling sender and receiver in a system?
+Example Use-Case:
+ In a text editor, actions like copy, paste, and undo are encapsulated as command objects. 
+ The UI buttons trigger commands without knowing the exact logic behind them.

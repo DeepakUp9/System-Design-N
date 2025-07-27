@@ -1,0 +1,7 @@
+Question:
+ You're building a menu management system for a restaurant where menu 
+ items can be individual dishes or combos (which include multiple items).
+  How would you apply the Composite Pattern to allow consistent operations like calculating total price or displaying item details?
+Example Use-Case:
+ Each menu item (dish or combo) implements a common interface. 
+ Combos internally store a list of items and delegate calls like getPrice() or printDescription() to each child — enabling a flexible and hierarchical menu structure
