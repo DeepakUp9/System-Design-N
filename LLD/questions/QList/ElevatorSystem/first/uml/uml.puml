@@ -1,0 +1,229 @@
+@startuml
+
+title Complete Elevator System UML Diagram
+
+class Building {
+  - floors : List<Floor>
+  - elevators : List<ElevatorCar>
+  - maxFloors : int
+  + Building(maxFloors: int, numberOfElevators: int)
+  + getFloor(number: int) : Floor
+  + getElevators() : List<ElevatorCar>
+  + getFloors() : List<Floor>
+  + getMaxFloors() : int
+}
+
+class Floor {
+  - floorNumber : int
+  - upButton : ExternalButton
+  - downButton : ExternalButton
+  + Floor(floorNumber: int)
+  + getFloorNumber() : int
+  + getUpButton() : ExternalButton
+  + getDownButton() : ExternalButton
+  + pressUpButton() : void
+  + pressDownButton() : void
+}
+
+class ExternalButton {
+  - floorNumber : int
+  - direction : Direction
+  - buttonType : ButtonType
+  - isPressed : boolean
+  + ExternalButton(floorNumber: int, direction: Direction)
+  + press() : void
+  + isPressed() : boolean
+  + getButtonType() : ButtonType
+  + getDirection() : Direction
+}
+
+class InternalButton {
+  - elevator : ElevatorCar
+  - targetFloor : int
+  - buttonType : ButtonType
+  - isPressed : boolean
+  + InternalButton(elevator: ElevatorCar, targetFloor: int)
+  + press() : void
+  + isPressed() : boolean
+  + getButtonType() : ButtonType
+  + getTargetFloor() : int
+}
+
+abstract class Button {
+  - buttonType : ButtonType
+  - isPressed : boolean
+  + Button(buttonType: ButtonType)
+  + {abstract} press() : void
+  + isPressed() : boolean
+  + getButtonType() : ButtonType
+}
+
+class ElevatorController {
+  - elevators : List<ElevatorCar>
+  - requestProcessor : RequestProcessor
+  - strategy : ElevatorStrategy
+  - building : Building
+  - instance : ElevatorController
+  + ElevatorController(building: Building)
+  + getInstance() : ElevatorController
+  + initialize(building: Building) : void
+  + submitRequest(request: Request) : void
+  + processRequest(request: Request) : void
+  + setStrategy(strategy: ElevatorStrategy) : void
+  + stopSystem() : void
+}
+
+interface ElevatorStrategy {
+  + {abstract} selectElevator(request: Request, elevators: List<ElevatorCar>) : ElevatorCar
+}
+
+class NearestElevatorStrategy {
+  + NearestElevatorStrategy()
+  + selectElevator(request: Request, elevators: List<ElevatorCar>) : ElevatorCar
+}
+
+class EvenOddStrategy {
+  + EvenOddStrategy()
+  + selectElevator(request: Request, elevators: List<ElevatorCar>) : ElevatorCar
+}
+
+class Request {
+  - sourceFloor : int
+  - destinationFloor : int
+  - direction : Direction
+  - requestTime : DateTime
+  + Request(sourceFloor: int, direction: Direction)
+  + Request(sourceFloor: int, destinationFloor: int, direction: Direction)
+  + getSourceFloor() : int
+  + getDestinationFloor() : int
+  + getDirection() : Direction
+  + setDestinationFloor(floor: int) : void
+  + toString() : String
+}
+
+class RequestProcessor {
+  - pendingRequests : BlockingQueue<Request>
+  - running : boolean
+  + RequestProcessor()
+  + addRequest(request: Request) : void
+  + processNextRequest() : void
+  + stop() : void
+  + processRequests() : void
+}
+
+class ElevatorCar {
+  - id : int
+  - currentFloor : int
+  - direction : Direction
+  - state : State
+  - display : Display
+  - door : Door
+  - internalPanel : InternalPanel
+  - requests : BlockingQueue<Request>
+  - running : boolean
+  + ElevatorCar(id: int, maxFloors: int)
+  + move() : void
+  + stop() : void
+  + openDoor() : void
+  + closeDoor() : void
+  + addRequest(request: Request) : void
+  + getCurrentFloor() : int
+  + getDirection() : Direction
+  + getState() : State
+  + getId() : int
+  + getInternalPanel() : InternalPanel
+  + operate() : void
+  + processRequest(request: Request) : void
+}
+
+class Display {
+  - currentFloor : int
+  - direction : Direction
+  - state : State
+  + Display()
+  + updateDisplay(currentFloor: int, direction: Direction, state: State) : void
+  + showMessage(message: String) : void
+  + show() : void
+}
+
+class Door {
+  - isOpen : boolean
+  + Door()
+  + open() : void
+  + close() : void
+  + isOpen() : boolean
+}
+
+class InternalPanel {
+  - buttons : Map<Integer, InternalButton>
+  - elevator : ElevatorCar
+  + InternalPanel(elevator: ElevatorCar, maxFloors: int)
+  + pressButton(floor: int) : void
+  + getButton(floor: int) : InternalButton
+}
+
+enum Direction {
+  UP
+  DOWN
+  IDLE
+}
+
+enum State {
+  MOVING
+  STOPPED
+  DOOR_OPEN
+  DOOR_CLOSED
+  MAINTENANCE
+}
+
+enum ButtonType {
+  INTERNAL
+  EXTERNAL_UP
+  EXTERNAL_DOWN
+}
+
+' Relationships
+Building "1" *-- "many" Floor
+Building "1" *-- "many" ElevatorCar
+
+Floor "1" *-- "1" ExternalButton : upButton
+Floor "1" *-- "1" ExternalButton : downButton
+
+ElevatorController "1" *-- "many" ElevatorCar
+ElevatorController "1" o-- "1" RequestProcessor
+ElevatorController "1" o-- "1" ElevatorStrategy
+ElevatorController "1" o-- "1" Building
+
+ElevatorStrategy <|.. NearestElevatorStrategy
+ElevatorStrategy <|.. EvenOddStrategy
+
+ElevatorCar "1" *-- "1" Display
+ElevatorCar "1" *-- "1" Door
+ElevatorCar "1" *-- "1" InternalPanel
+
+InternalPanel "1" *-- "many" InternalButton
+
+Button <|-- InternalButton
+Button <|-- ExternalButton
+
+RequestProcessor "1" *-- "many" Request
+
+ExternalButton --> ElevatorController : submitRequest()
+InternalButton --> ElevatorCar : addRequest()
+
+note right of ElevatorController
+  Singleton pattern
+  getInstance() returns instance
+end note
+
+note right of ElevatorCar
+  Thread operation
+  operate() runs in separate thread
+end note
+
+note right of RequestProcessor
+  Thread operation
+  processRequests() runs in separate thread
+end note
+
+@enduml

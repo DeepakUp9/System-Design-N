@@ -21,6 +21,43 @@ Some important questions to ask ourselves when searching for the right systems a
 - What’s the durability target of the data?  
 - What privacy and regulatory requirements do we require for storing or transmitting user data?  
 
+# Discuss the Components
+
+At some level, our job might be perceived as figuring out **which components** we’ll use, **where** they’ll be placed, and **how** they’ll interact with each other.
+
+---
+
+## Example
+- Choosing the type of database:  
+  - Should we use a **conventional (SQL) database**, or  
+  - Should we use a **NoSQL database**?  
+
+There might be cases where we have strong arguments to use **NoSQL databases**, but our interviewer may insist that we use a **traditional database**.  
+
+In such a case:  
+- As designers, we’ll have a harder job because we’ll need to use a traditional database.  
+- We’ll also need to **do extra work** to overcome the shortcomings or challenges.  
+- Effectively, we’d be **inventing a new component**.  
+
+👉 Such interactions during interviews are excellent opportunities to **exhibit our design skills**.
+
+---
+
+## Notes
+- We often **abstract away** the details of the components as **boxes**.  
+- We use **arrows** to show the interactions between them.  
+- It might also help to **define user-facing APIs at a high level** to better understand system data and interaction requirements.  
+
+---
+
+## Common System Components
+- Front-end components  
+- Load balancers  
+- Caches  
+- Databases  
+- Firewalls  
+- Content Delivery Networks (CDNs)  
+
 ### Discuss trade-offs
 Remember that there’s no one correct answer to a design problem. If we give the same problem to two different groups, they might come up with different designs.
 
@@ -31,7 +68,7 @@ These are some of the reasons why such diversity exists in design solutions:
 - Every design has its weaknesses. As designers, we should be aware of all of them, and we should have a follow-up plan to tackle them.
 
 
-### What not to do in an interview#
+### What not to do in an interview
 Here are a few things that we should avoid doing in a system design interview:
 
 - Don’t write code in a system design interview.

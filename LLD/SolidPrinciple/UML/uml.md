@@ -77,3 +77,13 @@
 | Uni-directional Ass.| `——>` (solid)       | One class knows about another (one-way)                                     |
 | Aggregation         | `◇——` (hollow diam)| "Has-a" relationship where child can exist independently                     |
 | Composition         | `◆——` (filled diam)| Strong "has-a" where child cannot exist without parent                       |
+
+
+
+
+(1) ◆─────→ (1)    = One-to-One
+(1) ◆─────→ (*)    = One-to-Many  
+(1) ◆─────→ (0..1) = One-to-Zero-or-One
+(1) ◆─────→ (2)    = One-to-Exactly-Two (our case)
+
+

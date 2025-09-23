@@ -17,7 +17,7 @@
 ## 🔹 Examples
 - **Bird Abstraction** → Instead of one specific bird, we talk about “birds” in general.  
 - **Libraries in Programming** → give simple interfaces, hide complex implementations.  
-- **Database Transactions** → hide concurrency issues, provide simple `commit` or `abort`.  
+- **Database Transactions** → hide concurrency issues, provide simple `commit` or `abort`.  -- **Transactions** is a database abstraction that hides many problematic outcomes when concurrent users are reading, writing, or mutating the data and gives a simple interface of commit, in case of success, or abort, in case of failure. Either way, the data moves from one consistent state to a new consistent state. The transaction enables end users to not be bogged down by the subtle corner-cases of concurrent data mutation, but rather concentrate on their business logic.  
 - **Distributed Systems (AWS, GCP, Azure)** → hide complex infrastructure, let developers focus on applications.  
 
 ---
