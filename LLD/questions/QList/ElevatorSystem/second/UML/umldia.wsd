@@ -1,0 +1,318 @@
+@startuml
+
+title Elevator System with Strategy Pattern Integration
+
+class Building {
+  - floors : List<Floor>
+  - elevators : List<ElevatorCar>
+  - maxFloors : int
+  + Building(maxFloors: int, numberOfElevators: int)
+  + getFloor(number: int) : Floor
+  + getElevators() : List<ElevatorCar>
+  + getFloors() : List<Floor>
+  + getMaxFloors() : int
+}
+
+class Floor {
+  - floorNumber : int
+  - upButton : ExternalButton
+  - downButton : ExternalButton
+  + Floor(floorNumber: int)
+  + getFloorNumber() : int
+  + getUpButton() : ExternalButton
+  + getDownButton() : ExternalButton
+  + pressUpButton() : void
+  + pressDownButton() : void
+}
+
+class ExternalButton {
+  - floorNumber : int
+  - direction : Direction
+  - buttonType : ButtonType
+  - isPressed : boolean
+  + ExternalButton(floorNumber: int, direction: Direction)
+  + press() : void
+  + isPressed() : boolean
+  + getButtonType() : ButtonType
+  + getDirection() : Direction
+}
+
+class InternalButton {
+  - elevator : ElevatorCar
+  - targetFloor : int
+  - buttonType : ButtonType
+  - isPressed : boolean
+  + InternalButton(elevator: ElevatorCar, targetFloor: int)
+  + press() : void
+  + isPressed() : boolean
+  + getButtonType() : ButtonType
+  + getTargetFloor() : int
+}
+
+abstract class Button {
+  - buttonType : ButtonType
+  - isPressed : boolean
+  + Button(buttonType: ButtonType)
+  + {abstract} press() : void
+  + isPressed() : boolean
+  + getButtonType() : ButtonType
+}
+
+class ElevatorController {
+  - elevators : List<ElevatorCar>
+  - requestProcessor : RequestProcessor
+  - externalRequestHandler : ExternalRequestHandler
+  - internalRequestHandler : InternalRequestHandler
+  - building : Building
+  - instance : ElevatorController
+  + ElevatorController(building: Building)
+  + getInstance() : ElevatorController
+  + initialize(building: Building) : void
+  + submitExternalRequest(request: ExternalRequest) : void
+  + submitInternalRequest(request: InternalRequest) : void
+  + setExternalStrategy(strategy: ExternalRequestStrategy) : void
+  + setInternalStrategy(strategy: InternalRequestStrategy) : void
+  + stopSystem() : void
+}
+
+' ========== EXTERNAL REQUEST STRATEGIES ==========
+
+interface ExternalRequestStrategy {
+  + {abstract} assignElevator(request: ExternalRequest, elevators: List<ElevatorCar>) : ElevatorCar
+  + {abstract} getStrategyName() : String
+}
+
+class SmartAssignmentStrategy {
+  + SmartAssignmentStrategy()
+  + assignElevator(request: ExternalRequest, elevators: List<ElevatorCar>) : ElevatorCar
+  + getStrategyName() : String
+  + findImmediateService(elevators: List<ElevatorCar>, targetFloor: int) : ElevatorCar
+  + findEnRouteService(elevators: List<ElevatorCar>, targetFloor: int, requestDirection: Direction) : ElevatorCar
+  + findProximityService(elevators: List<ElevatorCar>, targetFloor: int) : ElevatorCar
+  + calculateProximityScore(elevator: ElevatorCar, targetFloor: int) : double
+  + applyEvenOddTieBreaker(candidates: List<ElevatorCar>, targetFloor: int) : ElevatorCar
+}
+
+class EvenOddStrategy {
+  + EvenOddStrategy()
+  + assignElevator(request: ExternalRequest, elevators: List<ElevatorCar>) : ElevatorCar
+  + getStrategyName() : String
+}
+
+class ClosestAvailableStrategy {
+  + ClosestAvailableStrategy()
+  + assignElevator(request: ExternalRequest, elevators: List<ElevatorCar>) : ElevatorCar
+  + getStrategyName() : String
+}
+
+' ========== INTERNAL REQUEST STRATEGIES ==========
+
+interface InternalRequestStrategy {
+  + {abstract} planRoute(elevator: ElevatorCar, request: InternalRequest) : List<Integer>
+  + {abstract} getStrategyName() : String
+}
+
+class LookScanStrategy {
+  + LookScanStrategy()
+  + planRoute(elevator: ElevatorCar, request: InternalRequest) : List<Integer>
+  + getStrategyName() : String
+}
+
+class ShortestSeekTimeStrategy {
+  + ShortestSeekTimeStrategy()
+  + planRoute(elevator: ElevatorCar, request: InternalRequest) : List<Integer>
+  + getStrategyName() : String
+}
+
+class FifoStrategy {
+  + FifoStrategy()
+  + planRoute(elevator: ElevatorCar, request: InternalRequest) : List<Integer>
+  + getStrategyName() : String
+}
+
+' ========== STRATEGY HANDLERS ==========
+
+class ExternalRequestHandler {
+  - strategy : ExternalRequestStrategy
+  + ExternalRequestHandler(strategy: ExternalRequestStrategy)
+  + setStrategy(strategy: ExternalRequestStrategy) : void
+  + handleRequest(request: ExternalRequest, elevators: List<ElevatorCar>) : ElevatorCar
+}
+
+class InternalRequestHandler {
+  - strategy : InternalRequestStrategy
+  + InternalRequestHandler(strategy: InternalRequestStrategy)
+  + setStrategy(strategy: InternalRequestStrategy) : void
+  + handleRequest(elevator: ElevatorCar, request: InternalRequest) : List<Integer>
+}
+
+' ========== REQUEST CLASSES ==========
+
+class ExternalRequest {
+  - sourceFloor : int
+  - direction : Direction
+  - requestTime : DateTime
+  + ExternalRequest(sourceFloor: int, direction: Direction)
+  + getSourceFloor() : int
+  + getDirection() : Direction
+  + getRequestTime() : DateTime
+  + toString() : String
+}
+
+class InternalRequest {
+  - sourceFloor : int
+  - destinationFloor : int
+  - elevatorId : int
+  - requestTime : DateTime
+  + InternalRequest(sourceFloor: int, destinationFloor: int, elevatorId: int)
+  + getSourceFloor() : int
+  + getDestinationFloor() : int
+  + getElevatorId() : int
+  + getRequestTime() : DateTime
+  + toString() : String
+}
+
+' ========== ELEVATOR CAR ==========
+
+class ElevatorCar {
+  - id : int
+  - currentFloor : int
+  - direction : Direction
+  - state : ElevatorState
+  - display : Display
+  - door : Door
+  - internalPanel : InternalPanel
+  - pendingFloors : Set<Integer>
+  - externalRequests : Queue<ExternalRequest>
+  - currentLoad : int
+  - maxLoad : int
+  + ElevatorCar(id: int, maxLoad: int)
+  + addPendingFloor(floor: int) : void
+  + addExternalRequest(request: ExternalRequest) : void
+  + hasPendingFloors() : boolean
+  + getPendingFloors() : Set<Integer>
+  + clearFloor(floor: int) : void
+  + moveTo(floor: int) : void
+  + setIdle() : void
+  + getCurrentFloor() : int
+  + getDirection() : Direction
+  + getState() : ElevatorState
+  + getId() : int
+  + getCurrentLoad() : int
+  + getMaxLoad() : int
+  + operate() : void
+  + processInternalRequests() : void
+}
+
+class RequestProcessor {
+  - pendingRequests : BlockingQueue<Request>
+  - running : boolean
+  + RequestProcessor()
+  + addRequest(request: Request) : void
+  + processNextRequest() : void
+  + stop() : void
+  + processRequests() : void
+}
+
+class Display {
+  - currentFloor : int
+  - direction : Direction
+  - state : ElevatorState
+  + Display()
+  + updateDisplay(currentFloor: int, direction: Direction, state: ElevatorState) : void
+  + showMessage(message: String) : void
+  + show() : void
+}
+
+class Door {
+  - isOpen : boolean
+  + Door()
+  + open() : void
+  + close() : void
+  + isOpen() : boolean
+}
+
+class InternalPanel {
+  - buttons : Map<Integer, InternalButton>
+  - elevator : ElevatorCar
+  + InternalPanel(elevator: ElevatorCar, maxFloors: int)
+  + pressButton(floor: int) : void
+  + getButton(floor: int) : InternalButton
+}
+
+' ========== ENUMS ==========
+
+enum Direction {
+  UP
+  DOWN
+  IDLE
+}
+
+enum ElevatorState {
+  MOVING
+  IDLE
+  MAINTENANCE
+  DOORS_OPENING
+  DOORS_CLOSING
+}
+
+enum ButtonType {
+  INTERNAL
+  EXTERNAL_UP
+  EXTERNAL_DOWN
+}
+
+' ========== RELATIONSHIPS ==========
+
+Building "1" *-- "many" Floor
+Building "1" *-- "many" ElevatorCar
+
+Floor "1" *-- "1" ExternalButton : upButton
+Floor "1" *-- "1" ExternalButton : downButton
+
+ElevatorController "1" *-- "many" ElevatorCar
+ElevatorController "1" o-- "1" RequestProcessor
+ElevatorController "1" o-- "1" ExternalRequestHandler
+ElevatorController "1" o-- "1" InternalRequestHandler
+ElevatorController "1" o-- "1" Building
+
+ExternalRequestHandler "1" o-- "1" ExternalRequestStrategy
+InternalRequestHandler "1" o-- "1" InternalRequestStrategy
+
+ExternalRequestStrategy <|.. SmartAssignmentStrategy
+ExternalRequestStrategy <|.. EvenOddStrategy
+ExternalRequestStrategy <|.. ClosestAvailableStrategy
+
+InternalRequestStrategy <|.. LookScanStrategy
+InternalRequestStrategy <|.. ShortestSeekTimeStrategy
+InternalRequestStrategy <|.. FifoStrategy
+
+ElevatorCar "1" *-- "1" Display
+ElevatorCar "1" *-- "1" Door
+ElevatorCar "1" *-- "1" InternalPanel
+
+InternalPanel "1" *-- "many" InternalButton
+
+Button <|-- InternalButton
+Button <|-- ExternalButton
+
+RequestProcessor "1" *-- "many" Request
+
+ExternalButton --> ElevatorController : submitExternalRequest()
+InternalButton --> ElevatorCar : addPendingFloor()
+
+note right of ExternalRequestHandler
+  Handles external requests using:
+  - SmartAssignmentStrategy
+  - EvenOddStrategy  
+  - ClosestAvailableStrategy
+end note
+
+note right of InternalRequestHandler
+  Handles internal requests using:
+  - LookScanStrategy
+  - ShortestSeekTimeStrategy
+  - FifoStrategy
+end note
+
+@enduml

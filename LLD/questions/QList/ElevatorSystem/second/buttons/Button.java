@@ -3,8 +3,8 @@ package questions.QList.ElevatorSystem.second.buttons;
 import questions.QList.ElevatorSystem.first.ButtonType;
 
 public abstract class Button {
-    private ButtonType buttonType;
-    private boolean ispressed;
+    protected ButtonType buttonType;
+    protected boolean isPressed;
 
     public Button(ButtonType buttonType){
         this.buttonType = buttonType;
@@ -12,7 +12,7 @@ public abstract class Button {
 
     public abstract void press();
 
-    public boolean ispressed(){ return ispressed;}
+    public boolean ispressed(){ return isPressed;}
 
     public ButtonType getButtonType(){ return this.buttonType;}
     
