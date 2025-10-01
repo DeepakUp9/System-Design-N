@@ -1,22 +1,26 @@
 package questions.QList.ElevatorSystem.second;
 
+/**
+ * Elevator door mechanism
+ */
 public class Door {
     private boolean isOpen;
 
-    public Door(){
-      this.isOpen = false;
+    public Door() {
+        this.isOpen = false;
     }
-    
-    public void opened(){
+
+    public void open() {
         isOpen = true;
-        System.out.println("Door opened");
+        System.out.println("🚪 Door opened");
     }
 
-    public void closed(){
+    public void close() {
         isOpen = false;
-        System.out.println("Door Closed");
+        System.out.println("🚪 Door closed");
     }
 
-    public boolean isopen() {return this.isOpen;}
-
+    public boolean isOpen() {
+        return isOpen;
+    }
 }

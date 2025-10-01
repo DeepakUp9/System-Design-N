@@ -3,14 +3,16 @@ package questions.QList.ElevatorSystem.second;
 import questions.QList.ElevatorSystem.second.enums.Direction;
 import questions.QList.ElevatorSystem.second.enums.ElevatorState;
 
+/**
+ * Display screen inside elevator showing current status
+ */
 public class Display {
-    
     private int currentFloor;
     private Direction direction;
     private ElevatorState state;
 
     public Display() {
-        this.currentFloor = 0;
+        this.currentFloor = 1;
         this.direction = Direction.IDLE;
         this.state = ElevatorState.IDLE;
     }
@@ -24,12 +26,11 @@ public class Display {
 
     public void show() {
         String stateSymbol = state == ElevatorState.MOVING ? "→" :
-                state == ElevatorState.DOOR_OPEN? "↔" : "•";
+                state == ElevatorState.DOOR_OPEN ? "↔" : "•";
         String dirSymbol = direction == Direction.UP ? "↑" :
                 direction == Direction.DOWN ? "↓" : "•";
 
-        System.out.printf("[Display] Floor: %2d %s %s%n",
-                currentFloor, dirSymbol, stateSymbol);
+        System.out.printf("[Display] Floor: %2d %s %s%n", currentFloor, dirSymbol, stateSymbol);
     }
 
     public void showMessage(String message) {

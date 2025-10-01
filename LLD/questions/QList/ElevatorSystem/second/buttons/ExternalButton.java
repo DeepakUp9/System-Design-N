@@ -5,7 +5,11 @@ import questions.QList.ElevatorSystem.second.Elevator.ElevatorController;
 import questions.QList.ElevatorSystem.second.enums.Direction;
 import questions.QList.ElevatorSystem.second.request.ExternalRequest;
 
-public class ExternalButton extends Button{
+/**
+ * External button located on building floors for calling elevators
+ * Handles UP and DOWN direction requests from hallway
+ */
+public class ExternalButton extends Button {
     private int floorNumber;
     private Direction direction;
 
@@ -18,19 +22,24 @@ public class ExternalButton extends Button{
     @Override
     public void press() {
         isPressed = true;
-        System.out.println("External " + direction + " button pressed on floor " + floorNumber);
+        System.out.println("🎯 External " + direction + " button pressed on floor " + floorNumber);
 
-        // Create request and submit to controller
+        // Create external request and submit to controller
         ExternalRequest request = new ExternalRequest(floorNumber, direction);
         ElevatorController.getInstance().submitExternalRequest(request);
 
-        // Reset button after short delay
+        // Reset button after short delay (simulates button release)
         new Thread(() -> {
-            try { Thread.sleep(1000); } catch (InterruptedException e) {}
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
             isPressed = false;
         }).start();
     }
 
-     public Direction getDirection() { return direction; }
-
+    public Direction getDirection() {
+        return direction;
+    }
 }

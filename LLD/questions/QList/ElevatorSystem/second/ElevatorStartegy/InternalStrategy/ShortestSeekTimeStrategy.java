@@ -2,50 +2,79 @@ package questions.QList.ElevatorSystem.second.ElevatorStartegy.InternalStrategy;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import questions.QList.ElevatorSystem.second.Elevator.ElevatorCar;
-import questions.QList.ElevatorSystem.second.request.InternalRequest;
 
 // Strategy 2: Shortest Seek Time First (SSTF)
-class ShortestSeekTimeStrategy implements InternalRequestStrategy {
-    
+/**
+ * Shortest Seek Time First (SSTF) Strategy - Distance-based optimization
+ *
+ * FEATURES:
+ * - Always serves the closest floor next (minimum travel distance)
+ * - Minimizes travel time between consecutive stops
+ * - Can cause starvation for faraway floors
+ * - Good for systems prioritizing quick service over fairness
+ *
+ * ALGORITHM:
+ * 1. Start from current floor position
+ * 2. Always find and serve the closest pending floor
+ * 3. Repeat until all floors are served
+ *
+ * WARNING: May cause starvation where distant floors wait indefinitely
+ */
+public class ShortestSeekTimeStrategy implements InternalRequestStrategy {
+
     @Override
-    public String getStrategyName() {
-        return "Shortest Seek Time First Strategy";
-    }
-    
-    @Override
-    public List<Integer> planRoute(ElevatorCar elevator, InternalRequest request) {
+    public List<Integer> planRoute(ElevatorCar elevator, List<Integer> pendingFloors) {
         int currentFloor = elevator.getCurrentFloor();
-        int targetFloor = request.getFloor();
-        
-        System.out.println("🔄 " + getStrategyName() + " planning route for: " + request);
-        
-        Set<Integer> allFloors = new HashSet<>(elevator.getPendingFloors());
-        allFloors.add(targetFloor);
-        
-        List<Integer> route = new ArrayList<>();
-        List<Integer> remainingFloors = new ArrayList<>(allFloors);
-        int current = currentFloor;
-        
-        // Always pick the closest floor next
+
+        System.out.println("🔄 SSTF Algorithm planning route from floor " + currentFloor +
+                ", Pending floors: " + pendingFloors);
+
+        // Early return if no floors to serve
+        if (pendingFloors.isEmpty()) {
+            System.out.println("ℹ️ No pending floors to serve");
+            return new ArrayList<>();
+        }
+
+        List<Integer> optimalRoute = new ArrayList<>();
+        List<Integer> remainingFloors = new ArrayList<>(pendingFloors); // Working copy
+        int currentPosition = currentFloor; // Track current position during planning
+
+        System.out.println("🎯 Starting SSTF optimization from floor " + currentPosition);
+
+        // SSTF ALGORITHM: Greedy approach - always pick closest floor
         while (!remainingFloors.isEmpty()) {
-            final int currentPos = current;
-            Integer closest = remainingFloors.stream()
-                    .min(Comparator.comparingInt(floor -> Math.abs(floor - currentPos)))
+            // Find the floor with minimum seek time (absolute distance)
+            int finalCurrentPos = currentPosition; // Required for lambda expression
+            Integer closestFloor = remainingFloors.stream()
+                    .min(Comparator.comparingInt(floor -> Math.abs(floor - finalCurrentPos)))
                     .orElse(null);
-            
-            if (closest != null) {
-                route.add(closest);
-                remainingFloors.remove(closest);
-                current = closest;
+
+            if (closestFloor != null) {
+                // Add the closest floor to our optimal route
+                optimalRoute.add(closestFloor);
+
+                // Calculate and log the distance traveled
+                int distance = Math.abs(closestFloor - currentPosition);
+                System.out.println("   ➡️ Serving floor " + closestFloor + " (distance: " + distance + " floors)");
+
+                // Remove served floor from remaining list
+                remainingFloors.remove(closestFloor);
+
+                // Update current position for next iteration
+                currentPosition = closestFloor;
             }
         }
-        
-        System.out.println("📋 SSTF Route planned: " + route);
-        return route;
+
+        System.out.println("📋 SSTF Algorithm Optimal Route: " + optimalRoute);
+        System.out.println("⚠️ Note: SSTF may cause starvation for distant floors");
+        return optimalRoute;
+    }
+
+    @Override
+    public String getStrategyName() {
+        return "Shortest Seek Time First (SSTF) - Distance Optimized";
     }
 }

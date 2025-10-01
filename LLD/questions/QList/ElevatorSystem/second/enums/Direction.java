@@ -1,5 +1,11 @@
 package questions.QList.ElevatorSystem.second.enums;
 
+
+/**
+ * Movement direction of elevator
+ */
 public enum Direction {
-    UP, DOWN, IDLE;
+    UP,     // Moving upward
+    DOWN,   // Moving downward
+    IDLE    // Not moving
 }

@@ -3,6 +3,9 @@ package questions.QList.ElevatorSystem.second;
 import questions.QList.ElevatorSystem.second.buttons.ExternalButton;
 import questions.QList.ElevatorSystem.second.enums.Direction;
 
+/**
+ * Represents a floor in the building with external buttons
+ */
 public class Floor {
     private int floorNumber;
     private ExternalButton upButton;
@@ -14,11 +17,23 @@ public class Floor {
         this.downButton = new ExternalButton(floorNumber, Direction.DOWN);
     }
 
-    public int getFloorNumber() { return floorNumber; }
-    public ExternalButton getUpButton() { return upButton; }
-    public ExternalButton getDownButton() { return downButton; }
+    public int getFloorNumber() {
+        return floorNumber;
+    }
 
-    public void pressUpButton() { upButton.press(); }
-    public void pressDownButton() { downButton.press(); }
+    public ExternalButton getUpButton() {
+        return upButton;
+    }
 
+    public ExternalButton getDownButton() {
+        return downButton;
+    }
+
+    public void pressUpButton() {
+        upButton.press();
+    }
+
+    public void pressDownButton() {
+        downButton.press();
+    }
 }

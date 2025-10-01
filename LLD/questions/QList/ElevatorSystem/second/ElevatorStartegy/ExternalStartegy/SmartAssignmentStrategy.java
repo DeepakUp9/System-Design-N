@@ -12,6 +12,10 @@ import questions.QList.ElevatorSystem.second.enums.ElevatorState;
 import questions.QList.ElevatorSystem.second.request.ExternalRequest;
 
 // Strategy 1: Smart Assignment (Immediate -> EnRoute -> Proximity -> EvenOdd)
+/**
+ * Smart Assignment Strategy for External Requests
+ * Priority: Immediate → EnRoute → Proximity → Load Balancing
+ */
 public class SmartAssignmentStrategy implements ExternalRequestStrategy {
 
     @Override
@@ -20,60 +24,61 @@ public class SmartAssignmentStrategy implements ExternalRequestStrategy {
     }
 
     @Override
-    public ElevatorCar assignElevator(ExternalRequest request, List<ElevatorCar> ElevatorCars) {
+    public ElevatorCar assignElevator(ExternalRequest request, List<ElevatorCar> elevators) {
         int targetFloor = request.getFloor();
         Direction requestDirection = request.getDirection();
 
         System.out.println("🎯 " + getStrategyName() + " processing: " + request);
 
         // STEP 1: Immediate Service - ElevatorCar already at floor
-        ElevatorCar immediateService = findImmediateService(ElevatorCars, targetFloor);
-        if (immediateService != null) {
-            System.out.println("✅ Immediate Service: " + immediateService.getId() + " already at floor " + targetFloor);
-            return immediateService;
+        ElevatorCar immediate = findImmediateService(elevators, targetFloor);
+        if (immediate != null) {
+            System.out.println("✅ IMMEDIATE: Elevator " + immediate.getId() + " at floor " + targetFloor);
+            return immediate;
         }
 
         // STEP 2: En-Route Service - ElevatorCar moving toward floor in correct direction
-        ElevatorCar enRouteService = findEnRouteService(ElevatorCars, targetFloor, requestDirection);
-        if (enRouteService != null) {
-            System.out
-                    .println("🚀 En-Route Service: " + enRouteService.getId() + " heading toward floor " + targetFloor);
-            return enRouteService;
+        ElevatorCar enRoute = findEnRouteService(elevators, targetFloor, requestDirection);
+        if (enRoute != null) {
+            System.out.println("🚀 EN-ROUTE: Elevator " + enRoute.getId() + " heading toward floor " + targetFloor);
+            return enRoute;
         }
 
         // STEP 3: Proximity + Load Balancing
-        ElevatorCar proximityService = findProximityService(ElevatorCars, targetFloor);
-        System.out.println("📍 Proximity Service: " + (proximityService != null ? proximityService.getId() : "none"));
-        return proximityService;
+        ElevatorCar proximity = findProximityService(elevators, targetFloor);
+        if (proximity != null) {
+            System.out.println("📍 PROXIMITY: Elevator " + proximity.getId() + " assigned");
+        }
+
+        return proximity;
     }
 
-    private ElevatorCar findImmediateService(List<ElevatorCar> ElevatorCars, int targetFloor) {
-        return ElevatorCars.stream()
+    private ElevatorCar findImmediateService(List<ElevatorCar> elevators, int targetFloor) {
+        return elevators.stream()
                 .filter(e -> e.getCurrentFloor() == targetFloor && e.getState() == ElevatorState.IDLE)
                 .findFirst()
                 .orElse(null);
     }
 
-    private ElevatorCar findEnRouteService(List<ElevatorCar> ElevatorCars, int targetFloor,
-            Direction requestDirection) {
-        return ElevatorCars.stream()
+    private ElevatorCar findEnRouteService(List<ElevatorCar> elevators, int targetFloor, Direction requestDirection) {
+        return elevators.stream()
                 .filter(e -> isEnRoute(e, targetFloor, requestDirection))
                 .min(Comparator.comparingInt(e -> Math.abs(e.getCurrentFloor() - targetFloor)))
                 .orElse(null);
     }
 
-    private boolean isEnRoute(ElevatorCar ElevatorCar, int targetFloor, Direction requestDirection) {
-        int currentFloor = ElevatorCar.getCurrentFloor();
-        Direction ElevatorCarDirection = ElevatorCar.getDirection();
+    private boolean isEnRoute(ElevatorCar elevator, int targetFloor, Direction requestDirection) {
+        int currentFloor = elevator.getCurrentFloor();
+        Direction elevatorDirection = elevator.getDirection();
 
-        if (ElevatorCarDirection == Direction.UP && requestDirection == Direction.UP) {
+        if (elevatorDirection == Direction.UP && requestDirection == Direction.UP) {
             return currentFloor < targetFloor;
-        } else if (ElevatorCarDirection == Direction.DOWN && requestDirection == Direction.DOWN) {
+        } else if (elevatorDirection == Direction.DOWN && requestDirection == Direction.DOWN) {
             return currentFloor > targetFloor;
         }
         return false;
     }
-
+    
     private ElevatorCar findProximityService(List<ElevatorCar> ElevatorCars, int targetFloor) {
         List<ElevatorCar> candidates = ElevatorCars.stream()
                 .filter(e -> e.getState() != ElevatorState.MAINTENANCE)
