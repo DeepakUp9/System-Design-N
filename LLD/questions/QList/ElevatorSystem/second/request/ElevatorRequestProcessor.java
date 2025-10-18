@@ -138,4 +138,11 @@ public class ElevatorRequestProcessor {
             running = false;
             elevator.stop();
         }
+
+        public void clearPendingRequests() {
+            synchronized (pendingFloors) {
+                pendingFloors.clear();
+            }
+            System.out.println("🧹 Cleared all pending requests for Elevator " + elevator.getId());
+        }
     }

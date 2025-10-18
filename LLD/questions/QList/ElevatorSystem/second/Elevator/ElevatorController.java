@@ -9,6 +9,7 @@ import questions.QList.ElevatorSystem.second.ElevatorStartegy.ExternalStartegy.E
 import questions.QList.ElevatorSystem.second.ElevatorStartegy.ExternalStartegy.ExternalRequestStrategy;
 import questions.QList.ElevatorSystem.second.ElevatorStartegy.ExternalStartegy.SmartAssignmentStrategy;
 import questions.QList.ElevatorSystem.second.ElevatorStartegy.InternalStrategy.InternalRequestStrategy;
+import questions.QList.ElevatorSystem.second.enums.ElevatorState;
 import questions.QList.ElevatorSystem.second.request.ElevatorRequestProcessor;
 import questions.QList.ElevatorSystem.second.request.ExternalRequest;
 import questions.QList.ElevatorSystem.second.request.InternalRequest;
@@ -51,8 +52,7 @@ public class ElevatorController {
     public static synchronized void initialize(Building building) {
         if (instance == null) {
             instance = new ElevatorController(building);
-            System.out
-                    .println("✅ ElevatorController initialized with " + building.getElevators().size() + " elevators");
+            System.out.println("✅ ElevatorController initialized with " + building.getElevators().size() + " elevators");
         }
     }
 
@@ -73,6 +73,13 @@ public class ElevatorController {
         } else {
             System.out.println("❌ Could not assign elevator for: " + request);
         }
+    }
+
+    public void clearAllPendingRequests() {
+        for (ElevatorRequestProcessor processor : elevatorProcessors.values()) {
+            processor.clearPendingRequests();
+        }
+        System.out.println("🧹 Cleared all pending requests system-wide");
     }
 
     /**

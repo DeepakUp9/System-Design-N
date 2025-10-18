@@ -130,9 +130,13 @@ import questions.QList.ElevatorSystem.second.enums.ElevatorState;
 
         @Override
         public String toString() {
-            return String.format("Elevator[ID:%d, Floor:%d, Dir:%s, State:%s, Load:%d/%d, Pending:%s]",
-                    id, currentFloor, direction, state, currentLoad, maxLoad);
+            return String.format(
+                    "ElevatorCar [id=%s, currentFloor=%s, direction=%s, state=%s, display=%s, door=%s, internalPanel=%s, currentLoad=%s, maxLoad=%s, running=%s]",
+                    id, currentFloor, direction, state, display, door, internalPanel, currentLoad, maxLoad, running);
         }
+
+
+        
     }
 
 

@@ -24,7 +24,6 @@ Internal Request Flow:
 Global RequestProcessor → Directly to Specific ElevatorProcessor → Internal Strategy → Physical ElevatorCar
 
  ***/
-
 public class ElevatorSystemDemo {
     public static void main(String[] args) {
         System.out.println("=== 🏢 Elevator System with Strategy Pattern ===\n");
@@ -96,26 +95,21 @@ public class ElevatorSystemDemo {
         try { Thread.sleep(3000); } catch (InterruptedException e) {}
 
         System.out.println("\n" + "=".repeat(80));
-        System.out.println("🎯 TEST SCENARIO 4: YOUR SPECIFIC USE CASE");
+        System.out.println("🎯 TEST SCENARIO 4: SPECIFIC USE CASE WITH NATURAL FLOW");
         System.out.println("=".repeat(80));
 
-        // Reset elevators to specific positions for the test case
-        System.out.println("\n9. 🔄 Resetting elevators for specific test case:");
-        elevator1.moveToFloor(1);
-        elevator2.moveToFloor(1);
-        elevator3.moveToFloor(1);
-        elevator1.setIdle();
-        elevator2.setIdle();
-        elevator3.setIdle();
-        
-        System.out.println("📍 Reset positions:");
+        // Let system complete current operations naturally
+        System.out.println("\n9. ⏳ Waiting for system to complete current operations...");
+        try { Thread.sleep(8000); } catch (InterruptedException e) {}
+
+        System.out.println("📍 Current elevator positions:");
         building.getElevators().forEach(System.out::println);
 
         // Switch back to Smart Assignment for the main test
         System.out.println("\n10. 🔄 Switching back to Smart Assignment Strategy");
         controller.setExternalStrategy(new SmartAssignmentStrategy());
 
-        // Your specific scenario
+        // Your specific scenario - testing immediate service
         System.out.println("\n11. 👤 Person A at 7th floor requests DOWN");
         building.getFloor(7).pressDownButton();
         try { Thread.sleep(4000); } catch (InterruptedException e) {}
@@ -126,6 +120,8 @@ public class ElevatorSystemDemo {
             System.out.println("\n12. 👤 Person A enters elevator " + elevatorForPersonA.getId() + " and presses floor 4");
             elevatorForPersonA.getInternalPanel().pressButton(4);
             try { Thread.sleep(6000); } catch (InterruptedException e) {}
+        } else {
+            System.out.println("\n12. ❌ No elevator moving to pick up Person A");
         }
 
         // Person B at floor 4 requests DOWN - This should demonstrate immediate service
@@ -137,32 +133,36 @@ public class ElevatorSystemDemo {
         System.out.println("🔄 TEST SCENARIO 5: INTERNAL STRATEGY SWITCHING");
         System.out.println("=".repeat(80));
 
+        // Let system stabilize before internal strategy tests
+        System.out.println("\n14. ⏳ Letting system stabilize before internal strategy tests...");
+        try { Thread.sleep(5000); } catch (InterruptedException e) {}
+
         // Test different internal strategies
-        System.out.println("\n14. 🔄 Testing Internal Strategy Switching");
+        System.out.println("\n15. 🔄 Testing Internal Strategy Switching");
 
         // Test LOOK Algorithm
-        System.out.println("\n15. 🧪 Testing LOOK Algorithm (Default)");
+        System.out.println("\n16. 🧪 Testing LOOK Algorithm (Default)");
         elevator2.getInternalPanel().pressButton(3);
         elevator2.getInternalPanel().pressButton(7);
         elevator2.getInternalPanel().pressButton(1);
         try { Thread.sleep(5000); } catch (InterruptedException e) {}
 
         // Test SSTF Algorithm
-        System.out.println("\n16. 🔄 Switching to SSTF Internal Strategy");
+        System.out.println("\n17. 🔄 Switching to SSTF Internal Strategy");
         ElevatorRequestProcessor processor2 = controller.getProcessorForElevator(2);
         processor2.setInternalStrategy(new ShortestSeekTimeStrategy());
         
-        System.out.println("\n17. 🧪 Testing SSTF Algorithm");
+        System.out.println("\n18. 🧪 Testing SSTF Algorithm");
         elevator2.getInternalPanel().pressButton(4);
         elevator2.getInternalPanel().pressButton(9);
         elevator2.getInternalPanel().pressButton(2);
         try { Thread.sleep(5000); } catch (InterruptedException e) {}
 
         // Test FIFO Algorithm
-        System.out.println("\n18. 🔄 Switching to FIFO Internal Strategy");
+        System.out.println("\n19. 🔄 Switching to FIFO Internal Strategy");
         processor2.setInternalStrategy(new FifoStrategy());
         
-        System.out.println("\n19. 🧪 Testing FIFO Algorithm");
+        System.out.println("\n20. 🧪 Testing FIFO Algorithm");
         elevator2.getInternalPanel().pressButton(6);
         elevator2.getInternalPanel().pressButton(3);
         elevator2.getInternalPanel().pressButton(8);
@@ -172,8 +172,12 @@ public class ElevatorSystemDemo {
         System.out.println("🚨 TEST SCENARIO 6: CONCURRENT REQUESTS");
         System.out.println("=".repeat(80));
 
+        // Let system stabilize before concurrent requests
+        System.out.println("\n21. ⏳ Letting system stabilize before concurrent requests...");
+        try { Thread.sleep(5000); } catch (InterruptedException e) {}
+
         // Test concurrent requests
-        System.out.println("\n20. 🧪 Testing Concurrent Requests");
+        System.out.println("\n22. 🧪 Testing Concurrent Requests");
         
         // Multiple people pressing buttons around the same time
         System.out.println("    • Person at floor 2 presses UP");
@@ -192,6 +196,7 @@ public class ElevatorSystemDemo {
         System.out.println("=".repeat(80));
 
         // Wait for all operations to complete
+        System.out.println("\n23. ⏳ Waiting for all operations to complete...");
         try { Thread.sleep(5000); } catch (InterruptedException e) {}
 
         System.out.println("\n=== 📊 Final Elevator Status ===");
@@ -204,6 +209,8 @@ public class ElevatorSystemDemo {
             Set<Integer> pending = processor.getPendingFloors();
             if (!pending.isEmpty()) {
                 System.out.println("Elevator " + elevator.getId() + " pending floors: " + pending);
+            } else {
+                System.out.println("Elevator " + elevator.getId() + " pending floors: None");
             }
         }
 
@@ -216,7 +223,7 @@ public class ElevatorSystemDemo {
         System.out.println("  ✅ Shortest Seek Time First Internal Strategy");
         System.out.println("  ✅ FIFO Internal Strategy");
         System.out.println("  ✅ Concurrent Request Handling");
-        System.out.println("  ✅ Your Specific Use Case (Immediate Service)");
+        System.out.println("  ✅ Specific Use Case Testing");
 
         // Cleanup
         controller.stopSystem();
