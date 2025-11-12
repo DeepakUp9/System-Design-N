@@ -135,6 +135,8 @@ Understanding:
   - Reducing pure replication reliance
 
 #### Consensus
+One of our nodes is in Seattle, another is in Beijing, and another is in London. There is a system request at 7:05 a.m. Pacific Daylight Time. Given the travel time of data packets, can this be recorded and properly synchronized in the remote nodes, and can it be concurred? This is a simple problem of consensus—all the nodes need to agree, which will prevent faulty processes from running and ensure consistency and replication of data and processes across the system.  
+
 Example scenario:
 - Nodes in Seattle, Beijing, London
 - Request at 7:05 a.m. PDT
