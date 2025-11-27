@@ -69,7 +69,6 @@ One of the most widely used techniques is **replication-based fault tolerance**.
 
 ---
 
-![Checkpointing in a consistent and inconsistent state.](checkpoint.png)
 
 # Checkpointing in Distributed Systems
 
@@ -91,6 +90,7 @@ The goal is to capture the **global state** of all processes in such a way that 
 If not, the state is **inconsistent**.
 
 ---
+![Checkpointing in a consistent and inconsistent state.](checkpoint.png)
 
 ## Left Side (Consistent State ✅)
 

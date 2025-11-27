@@ -293,21 +293,6 @@ CPU time per program = 0.001 second
 
 # What’s Next
 In the next section, we’ll use **RPS (Requests Per Second)** numbers for server estimation with other resources such as **storage** and **network bandwidth**.
-  
-
-
----
-
-# Notes
-
-- Different assumptions (e.g., number of instructions per request) will change the final numbers.  
-- Our estimates are **reasonable in the absence of real measurements**.  
-- Notice how we avoided CPU/memory/I/O complexities → this simplification is the hallmark of **BOTECs**.
-
----
-
-# What’s Next
-In the next section, we’ll use **RPS (Requests Per Second)** numbers for server estimation with other resources such as **storage** and **network bandwidth**.
 
 
 

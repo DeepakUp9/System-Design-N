@@ -99,6 +99,209 @@ A record is a data unit within the DNS database that shows a **name-to-value bin
 - At the **local name server** within the user’s network  
 - At the **ISP’s DNS resolvers**  
 
+
+# How DNS Caching Works — Layer by Layer
+
+DNS caching does not happen in just one place. To speed up website access, multiple layers store DNS responses temporarily.
+
+Let's go through each one slowly and deeply so you understand what exactly happens.
+
+## 1️⃣ Browser DNS Cache
+
+### 💡 What it is
+
+Your browser (Chrome, Safari, Firefox, etc.) keeps a small in-memory cache of domain → IP mappings.
+
+### 🧠 Why?
+
+Because the browser doesn't want to ask DNS again and again if you're visiting the same site repeatedly.
+
+### 📌 Example
+
+You visit google.com.
+
+Chrome receives the IP: 142.250.190.14
+Now Chrome stores it.
+
+If you open google.com again (within the TTL), Chrome directly uses the cached IP.
+
+### ⚡ Benefit
+
+No need to ask OS or ISP → very fast.
+
+### ⏳ TTL
+
+Browser obeys the TTL returned by the DNS record (e.g. 300 seconds).
+
+### 🔍 Check Chrome DNS cache
+
+Go to: `chrome://net-internals/#dns`
+
+---
+
+## 2️⃣ Operating System DNS Cache (OS Resolver Cache)
+
+### 💡 What it is
+
+The OS (Windows, macOS, Linux) has its own DNS resolver. After the browser tries, the OS checks its own cache.
+
+### 💻 Example
+
+You type in terminal:
+
+```bash
+ping facebook.com
+```
+
+If OS already knows the IP (from past queries), it answers immediately.
+
+### ⚡ Benefit
+
+ALL applications can use this cache — browsers, curl, ping, games, etc.
+
+### ⏳ TTL
+
+Again follows DNS TTL, but some OSes may override or extend it.
+
+### 🔍 View OS DNS cache
+
+**Windows:**
+```bash
+ipconfig /displaydns
+```
+
+**macOS:**
+```bash
+sudo killall -INFO mDNSResponder
+```
+
+**Linux:**
+
+If using systemd-resolved:
+
+```bash
+systemd-resolve --statistics
+```
+
+---
+
+## 3️⃣ Local Network DNS Server (Router / Home WiFi)
+
+### 💡 What it is
+
+Your home router often acts as a DNS forwarder. It also maintains a small DNS cache.
+
+### 📌 Example
+
+Multiple devices in your home (mobile, laptop, TV) all access youtube.com.
+
+Instead of all of them asking the ISP DNS servers separately, your router caches the response.
+
+### ⚡ Benefit
+
+- Reduces network traffic
+- Speeds up DNS for the entire local network
+
+### Where it exists?
+
+- Home Wi-Fi routers
+- Corporate networks
+- University networks
+
+### 📝 Important
+
+Local DNS servers normally forward queries to the ISP's DNS, Google DNS, Cloudflare DNS etc., and cache the results.
+
+---
+
+## 4️⃣ ISP DNS Cache (Largest Cache Layer)
+
+### 💡 What it is
+
+Your Internet Service Provider (Jio, Airtel, Vodafone, BSNL) runs large DNS resolvers.
+
+These resolvers store DNS responses from millions of queries for their entire customer base.
+
+### 🧠 Why important?
+
+This is the largest and most influential DNS cache that affects the entire region.
+
+### 📌 Example
+
+Millions of Jio users access instagram.com.
+
+Jio's DNS resolver asks the authoritative servers ONCE.
+
+Then it caches the IP and returns the IP to all other users instantly.
+
+### ⚡ Benefits
+
+- Huge speed improvement
+- Reduces load on global DNS infrastructure
+- Reduces latency for users
+- Handles repeated queries more efficiently
+
+### ⚠️ Problem
+
+If ISP cache gets poisoned or corrupted → millions of users see wrong DNS results.
+
+This is why DNS poisoning attacks target ISP-level caches.
+
+---
+
+## 🧱 How the DNS Lookup Happens With All These Caches
+
+Here's the exact order:
+
+```
+Browser Cache
+     ↓
+OS Cache
+     ↓
+Local Network DNS (router)
+     ↓
+ISP DNS Resolver Cache
+     ↓
+If not found → root DNS → TLD DNS → authoritative DNS
+```
+
+At each layer, if the answer is found in cache → the lookup stops.
+
+---
+
+## 🧊 Real Example: Visiting example.com
+
+**Step 1:** Browser looks in its DNS cache
+- If found → DONE.
+
+**Step 2:** Browser asks OS DNS cache
+- If found → DONE.
+
+**Step 3:** OS asks your router (local DNS server)
+- If found → DONE.
+
+**Step 4:** Router asks ISP DNS cache
+- If found → DONE.
+
+**Step 5:** If not cached anywhere
+
+ISP DNS resolver goes through:
+- root DNS
+- TLD (.com) DNS
+- authoritative DNS for example.com
+
+And stores the result in all caches (according to TTL).
+
+---
+
+## 📝 Summary Table
+
+| Layer | Who Uses It | Speed | Size | Notes |
+|-------|-----------|-------|------|-------|
+| Browser Cache | Only that browser | Fastest | Small | Clear on browser restart sometimes |
+| OS Cache | All apps | Very fast | Medium | Good for repeated system use |
+| Local DNS Server | Entire home/office network | Fast | Medium | Router normally does this |
+| ISP DNS Cache | Millions of users | Fast | Huge | Most impactful |
 ---
 
 
@@ -211,7 +414,7 @@ Let’s run a couple of commands. Click on the terminal to execute the following
 
 ![nslookup ](nslookup.png)    
 
-![dig.png](dig.png.png)
+![dig.png](dig.png)
 
 
 
