@@ -137,3 +137,265 @@ These extensions are invoked only if the customer requests them during the reser
 Here’s the use case diagram for the car rental system:
 
 ![The use case diagram of the car rental system](Theusecasediagramofthecarrentalsystem.png) 
+
+---
+
+# Use Case Diagram for the Car Rental System — Deep Explanation
+
+This section defines how the system behaves, who interacts with it, and what use cases must exist. An interviewer wants to see whether you understand how to convert **requirements → use cases → behaviors**.
+
+---
+
+## 1. System Boundary
+
+The **"system"** here is **Car Rental System** — a digital platform that automates:
+
+* Searching vehicles
+* Creating reservations
+* Tracking vehicle logs
+* Handling payments
+* Managing inventory
+* Sending notifications
+
+**Everything we describe must fall inside this boundary.**
+
+---
+
+## 2. Actors
+
+### Primary Actor: Customer
+
+This is your main external user. They:
+
+* Create & manage reservations
+* Search vehicles
+* Make payments
+* Pick/return vehicles
+* Add services or equipment
+
+**This is the core business flow.**
+
+### Secondary Actor: Receptionist
+
+A system operator who:
+
+* Gives support to a customer
+* Helps them create reservations
+* Manages inventory
+* Updates vehicle logs
+* Accepts payment
+
+**Think of them like an admin user.**
+
+---
+
+## 3. Use Cases
+
+The interviewer wants to know if you can derive use cases directly from requirements. Here's a clean mapping:
+
+### Customer Use Cases
+
+#### Account & Auth
+* Register account
+* Login/Logout
+
+#### Inventory & Reservation
+* Search vehicle
+* Make reservation
+* Update reservation
+* Cancel reservation
+* Pick up vehicle
+* Return vehicle
+
+#### Billing
+* Pay bill
+
+---
+
+### Receptionist Use Cases
+
+#### Customer Support
+* Register customer
+* Search vehicles
+* Make/Update/Cancel reservation
+* Pick/Return on behalf of customer
+* Collect payment
+
+#### Vehicle Inventory
+* Add vehicle
+* Remove vehicle
+* Modify vehicle info
+* Update vehicle log
+
+**They can operate everything the customer can, plus inventory management.**
+
+---
+
+### System (Automated) Use Cases
+
+These are not manually triggered — **system does them automatically**.
+
+* Send reservation confirmation
+* Send cancellation notification
+* Send overdue notification
+
+**This shows you understand automation.**
+
+---
+
+## 4. Relationships Between Use Cases
+
+This is where **most candidates fail**. If you explain this cleanly, you look senior.
+
+---
+
+### A. Generalization
+
+Used when you have a **common behavior + specialized versions**.
+
+#### Example:
+
+```
+Add Vehicle
+    ↓ (generalization)
+    ├── Add Car
+    ├── Add Truck
+    ├── Add Van
+    └── Add Motorcycle
+```
+
+#### Why generalization?
+
+* Each type may require extra fields
+* You avoid rewriting logic
+* New vehicle type? Just add a new child use case
+
+**Shows scalability.**
+
+---
+
+### B. Association
+
+Simple **"actor ↔ use case"** relationship. Means: this actor participates in this use case.
+
+#### Example:
+
+* Customer ↔ Make Reservation
+* Receptionist ↔ Add Vehicle
+* System ↔ Send Notification
+
+Nothing complex here — just mapping.
+
+---
+
+### C. Include
+
+Used when a use case **must always include** another use case.
+
+#### Example 1
+
+```
+Return Vehicle → includes → Pay Bill
+```
+
+**Because payment is always required on return.**
+
+#### Example 2
+
+```
+Make Reservation → includes → Send Reservation Notification
+```
+
+**Notification must always be sent.**
+
+#### Why use include?
+
+* Avoid duplication
+* Keep base use cases clean
+* Change logic in one shared place
+
+---
+
+### D. Extend
+
+Used for **optional behaviors**.
+
+**Base:** Update Reservation
+
+**Extensions:**
+* Add insurance
+* Add additional driver
+* Add service (Wi-Fi, driver, roadside assistance)
+* Add equipment (child seat, ski rack, GPS)
+
+**These are optional — execution depends on conditions.**
+
+#### Why use extend?
+
+* Base use case stays simple
+* Optional logic goes into separate modules
+* Easy future expansion
+
+---
+
+## 📊 Complete Use Case Overview
+
+### Customer Use Cases Summary
+
+| **Category** | **Use Cases** |
+|-------------|---------------|
+| Account | Register, Login, Logout |
+| Search & Browse | Search vehicles by criteria |
+| Reservation | Make, Update, Cancel reservation |
+| Operations | Pickup vehicle, Return vehicle |
+| Payment | Pay bill |
+
+### Receptionist Use Cases Summary
+
+| **Category** | **Use Cases** |
+|-------------|---------------|
+| Customer Support | Register customer, Assist with reservations |
+| Inventory Management | Add/Remove/Modify vehicles |
+| Operations | Process pickup/return, Collect payment |
+| System Maintenance | Update vehicle logs, Manage parking stalls |
+
+### System Automated Use Cases
+
+| **Trigger** | **Action** |
+|------------|-----------|
+| Reservation created | Send confirmation notification |
+| Reservation cancelled | Send cancellation notification |
+| Return overdue | Send overdue notification + Generate fine |
+
+---
+
+## 🎯 Use Case Relationship Summary
+
+| **Relationship** | **Symbol** | **When to Use** | **Example** |
+|-----------------|-----------|----------------|-------------|
+| **Association** | ——— | Actor participates in use case | Customer ——— Make Reservation |
+| **Generalization** | ◁——— | Specialized versions of base case | Add Vehicle ◁——— Add Car |
+| **Include** | ——«include»→ | Always executes | Return Vehicle ——«include»→ Pay Bill |
+| **Extend** | ←——«extend»—— | Optional execution | Update Reservation ←——«extend»—— Add Insurance |
+
+---
+
+## 💡 Interview Tips
+
+### What Interviewers Look For:
+
+1. **Clear actor identification** - Did you identify all user types?
+2. **Complete use case coverage** - Did you miss any major functionality?
+3. **Proper relationships** - Do you understand include vs extend?
+4. **System automation** - Did you identify automated behaviors?
+5. **Scalability thinking** - Did you use generalization for extensibility?
+
+### Common Mistakes to Avoid:
+
+❌ Confusing include and extend  
+❌ Missing system-triggered use cases  
+❌ Not using generalization for vehicle types  
+❌ Forgetting receptionist capabilities  
+❌ Mixing implementation details with use cases
+
+---
