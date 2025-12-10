@@ -1,0 +1,184 @@
+# -----------------------------------------------------------------------------
+# 1. Spring General Configuration
+# -----------------------------------------------------------------------------
+spring:
+  application:
+    name: stack-clone-lld
+  profiles:
+    active: dev # Default profile for local development
+
+  # -----------------------------------------------------------------------------
+  # 2. Database Configuration (JPA/Hibernate)
+  # Production Standard: Using PostgreSQL
+  # -----------------------------------------------------------------------------
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/stackdb # Replace with actual connection
+#    username: stackuser
+#    password: strongpassword
+#    driver-class-name: org.postgresql.Driver
+#
+#  jpa:
+#    hibernate:
+#      ddl-auto: update # Caution: Use 'validate' or 'none' in true production environment
+#    show-sql: false # Production standard: Keep this off or minimal
+#    properties:
+#      hibernate:
+#        format_sql: true
+#        # Performance/Resilience: Batching updates improves efficiency for high-volume transactions
+#        jdbc.batch_size: 20
+
+  # -----------------------------------------------------------------------------
+  # 2. Database Configuration (JPA/Hibernate)
+  # -----------------------------------------------------------------------------
+  spring:
+    # ... existing datasource config ...
+
+    jpa:
+      hibernate:
+        # CRITICAL CHANGE: Disable Hibernate DDL generation in favor of Flyway
+        ddl-auto: none
+      show-sql: false
+      properties:
+        hibernate:
+          format_sql: true
+          jdbc.batch_size: 20
+
+    # Flyway Configuration (Enable and point to the location of SQL files)
+    flyway:
+      enabled: true
+      locations: classpath:db/migration # Standard location for Flyway scripts
+      baseline-on-migrate: true # Good practice for existing databases
+
+  # -----------------------------------------------------------------------------
+  # 3. Web/API Configuration (Resilience/Scalability)
+  # -----------------------------------------------------------------------------
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+  # Configuration for Spring Security (JWT Token Expiration would go here)
+
+# -----------------------------------------------------------------------------
+# 4. Resilience and Monitoring (Actuator)
+# -----------------------------------------------------------------------------
+management:
+  endpoint:
+    health:
+      show-details: always # Shows database connection status, disk space, etc.
+  endpoints:
+    web:
+      exposure:
+        # Expose crucial endpoints for external monitoring (Prometheus pulls metrics)
+        include: 'health, info, prometheus, caches, threaddump, loggers' # Expose critical monitoring endpoints
+
+  metrics:
+    # Ensure all metric tags are enabled for better filtering in Grafana
+    tags:
+      application: ${spring.application.name}
+      environment: ${spring.profiles.active} # Tags based on the active profile
+
+    # Settings for the Prometheus registry
+    export:
+      prometheus:
+        enabled: true
+
+    # Configure detailed tracing and timing metrics (e.g., HTTP request latency)
+    tracing:
+      enabled: true
+      # Tags to include in HTTP request timing metrics (Scalability/Performance tracing)
+      tag:
+        http:
+          client:
+            request:
+              method: true
+              path: true
+          server:
+            request:
+              method: true
+              path: true
+
+# -----------------------------------------------------------------------------
+# 5. Logging Configuration (Scalability/Traceability)
+# -----------------------------------------------------------------------------
+logging:
+  level:
+    # Set production logging levels
+    root: INFO
+    org.springframework.web: INFO
+    # DEBUG is helpful for debugging LLD pattern execution
+    com.stackclonell: DEBUG
+
+  # Production: Define a pattern that includes tracing information
+  pattern:
+    level: "%5p [${spring.application.name},%X{traceId},%X{spanId}]" # TraceId/SpanId for distributed tracing (Scalability)
+    console: "%clr(%d{HH:mm:ss.SSS}){faint} %clr(%5p) %clr(${PID}){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n"
+
+  # Production: Configure file logging for log retention and analysis
+  file:
+    name: logs/${spring.application.name}.log
+
+  datasource:
+    # Explicitly configure connection pooling settings
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      maximum-pool-size: 20   # Scalability: Max number of connections
+      minimum-idle: 5         # Resilience: Minimum number of idle connections
+      idle-timeout: 30000     # 30 seconds
+      connection-timeout: 20000 # 20 seconds (Resilience)
+      pool-name: StackCloneCP
+
+  spring:
+    profiles:
+      active: dev # Default profile for local development
+
+  # -----------------------------------------------------------------------------
+  # 6. Caching Configuration (Scalability)
+  # -----------------------------------------------------------------------------
+    # ... existing config ...
+    cache:
+      type: redis
+      cache-names:
+        - tags                 # Cache for the list of unique tags
+        - questionById         # Cache for single question objects
+        - popularQuestions     # Cache for the top, most popular questions
+
+    data:
+      redis:
+        timeout: 500ms         # Resilience: Ensure quick failure on timeout
+
+# -----------------------------------------------------------------------------
+# 7. Session Management Configuration (Scalability & Session Affinity)
+# -----------------------------------------------------------------------------
+server:
+  # Configure the session cookie settings
+  servlet:
+    session:
+      # Explicitly name the session cookie for clear identification by the LB
+      cookie:
+        name: JSESSIONID
+        # Set to 'None' for cross-site requests, required for modern browsers
+        # (needs HTTPS/security config in production)
+        same-site: None
+        secure: true # CRITICAL for production/HTTPS
+        http-only: true
+
+  # CRITICAL: Define a unique instance ID for WebSocket/Session routing.
+  # This makes it easier for the Load Balancer to track and stick the session.
+  # The instance-id is often the application's unique server name.
+  instance-id: ${spring.application.name}-${random.uuid}
+
+
+# -----------------------------------------------------------------------------
+# 8. Feature Flag Configuration (A/B Testing Integration)
+# -----------------------------------------------------------------------------
+app:
+  features:
+    # A/B Test Flag: New vs. Old sorting logic display
+    new-sorting-ui-enabled: false
+
+    # Kill Switch Flag: Instantly disable the comment system if issues arise (Resilience)
+    kill-switch-comments: false
+
+    # Beta Flag: Only show to specific users
+    beta-reputation-display: false

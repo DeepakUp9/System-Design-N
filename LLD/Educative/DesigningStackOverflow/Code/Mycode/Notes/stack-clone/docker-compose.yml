@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  # 1. PostgreSQL Database Service
+  postgres:
+    image: postgres:15-alpine
+    container_name: stackdb_postgres
+    restart: always
+    environment:
+      # Database access credentials (match application.yml)
+      POSTGRES_USER: stackuser
+      POSTGRES_PASSWORD: strongpassword
+      POSTGRES_DB: stackdb
+    ports:
+      # Expose port for local access (optional, but useful for debugging)
+      - "5432:5432"
+    volumes:
+      # Data persistence: Keeps data even if the container is stopped/removed
+      - postgres_data:/var/lib/postgresql/data/
+    healthcheck: # Resilience: Define a health check for DB readiness
+      test: ["CMD-SHELL", "pg_isready -U stackuser"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # 2. Spring Boot Application Service
+  app:
+    build: . # Build using the Dockerfile in the current directory
+    container_name: stack_clone_app
+    ports:
+      - "8080:8080"
+    environment:
+      # CRITICAL: Overwrite application.yml properties using environment variables
+      # This ensures the app connects to the 'postgres' service by its internal network name
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/stackdb
+      SPRING_DATASOURCE_USERNAME: stackuser
+      SPRING_DATASOURCE_PASSWORD: strongpassword
+    depends_on:
+      # Ensure the DB is healthy before starting the application (Resilience)
+      postgres:
+        condition: service_healthy
+    # Optional: Mount application logs for monitoring (Scalability/Traceability)
+    volumes:
+      - ./logs:/app/logs
+
+    labels:
+      # These labels help Prometheus automatically discover the scraping target
+      prometheus.io/scrape: 'true'
+      prometheus.io/path: '/actuator/prometheus'
+      prometheus.io/port: '8080'
+
+    # CRITICAL NOTE for deployment:
+    # An external Prometheus server would scrape the application at:
+    # http://stack_clone_app:8080/actuator/prometheus
+
+
+# Volume definitions for persistent data storage
+volumes:
+  postgres_data:

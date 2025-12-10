@@ -1,0 +1,12 @@
+# Use this file for production-specific settings when the 'prod' profile is active
+
+spring:
+  # Ensure the Flyway is used when deploying to production
+  flyway:
+    enabled: true
+
+  # Set higher logging level for production (less verbose)
+logging:
+  level:
+    root: INFO
+    com.stackclonell: INFO # Only log INFO and above for our packages

@@ -1,0 +1,123 @@
+name: Stack Clone CI/CD Pipeline
+
+# 1. Trigger: Run this workflow on every push to the main branch
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
+
+env:
+  # Define standard environment variables
+  JAVA_VERSION: '17'
+  DOCKER_IMAGE_NAME: stack-clone-app
+  DOCKER_REGISTRY: ghcr.io/${{ github.repository }} # GitHub Container Registry
+
+jobs:
+  # =====================================================================
+  # Job 1: Build & Test (Continuous Integration)
+  # =====================================================================
+  build-and-test:
+    name: Build, Unit Test, & Package
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Cache Maven Dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+
+      # --- LLD Robustness Check ---
+      - name: Run Unit Tests
+        run: ./mvnw test -B
+
+      # --- Packaging ---
+      - name: Build JAR artifact
+        run: ./mvnw package -DskipTests
+
+      # CRITICAL: Upload the JAR artifact for the next stage (Deployment)
+      - name: Upload JAR artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: stack-clone-app-jar
+          path: target/*.jar
+
+  # =====================================================================
+  # Job 2: Containerize & Publish (Continuous Delivery)
+  # =====================================================================
+  containerize-and-publish:
+    name: Build Docker Image & Push to GHCR
+    runs-on: ubuntu-latest
+    needs: build-and-test # Depends on successful build and tests
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Download JAR artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: stack-clone-app-jar
+          path: target/
+
+      # --- Security: Log into GitHub Container Registry (GHCR) ---
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }} # Built-in GitHub secret
+
+      # --- Containerization ---
+      - name: Build Docker Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ env.DOCKER_REGISTRY }}:${{ github.sha }} # Tag with the commit SHA (unique version)
+          cache-from: type=gha # Use GitHub Actions caching for faster builds
+          cache-to: type=gha,mode=max
+          build-args: |
+            JAR_FILE=target/*.jar
+
+      - name: Verify Image Tag
+        id: image
+        run: |
+          echo "IMAGE_TAG=${{ env.DOCKER_REGISTRY }}:${{ github.sha }}" >> $GITHUB_OUTPUT
+
+  # =====================================================================
+  # Job 3: Deployment (Simulated)
+  # =====================================================================
+  deploy-to-staging:
+    name: Deploy to Staging Environment
+    runs-on: ubuntu-latest
+    needs: containerize-and-publish # Only deploy a verified, published image
+
+    # CRITICAL: Environment protection and review (DevOps/Security)
+    environment:
+      name: Staging
+      url: https://staging.yourdomain.com/
+
+    steps:
+      - name: Simulate Deployment (K8s/ECS/VM)
+        run: |
+          echo "Simulating deployment of image: ${{ needs.containerize-and-publish.outputs.image-tag }}"
+          echo "This step would use kubectl, ECS CLI, or Ansible to pull the new image and update the service."
+          echo "Deployment successful to Staging environment."
