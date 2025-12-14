@@ -1,0 +1,81 @@
+# -------------------------------------------------------------
+# 1. Configuration Map for environment variables
+# -------------------------------------------------------------
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jigsaw-config
+data:
+  SPRING_PROFILES_ACTIVE: prod
+  POSTGRES_HOST: postgres-service
+  REDIS_HOST: redis-service
+
+---
+# -------------------------------------------------------------
+# 2. Deployment for Jigsaw Game Service
+# -------------------------------------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jigsaw-game-deployment
+  labels:
+    app: jigsaw-game-service
+spec:
+  replicas: 3 # Scalability: Run 3 instances for High Availability
+  selector:
+    matchLabels:
+      app: jigsaw-game-service
+  template:
+    metadata:
+      labels:
+        app: jigsaw-game-service
+    spec:
+      containers:
+        - name: jigsaw-game-service
+          image: your-dockerhub-repo/jigsaw-game:latest # CRITICAL: Replace with your actual image
+          ports:
+            - containerPort: 8080
+          env:
+            # Database connection using Kubernetes Service names
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://$(POSTGRES_HOST):5432/jigsaw_db
+            - name: SPRING_DATA_REDIS_HOST
+              value: $(REDIS_HOST)
+            # Required for Flyway to run before the application starts up
+            - name: SPRING_FLYWAY_ENABLED
+              value: "true"
+          livenessProbe: # Resilience: K8s checks if the app is still running
+            httpGet:
+              path: /actuator/health/liveness # Requires Spring Boot Actuator
+              port: 8080
+            initialDelaySeconds: 20
+            timeoutSeconds: 5
+          readinessProbe: # Resilience: K8s checks if the app is ready to serve traffic
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          resources: # Resource requests for stability
+            requests:
+              memory: "512Mi"
+              cpu: "500m"
+            limits:
+              memory: "1024Mi"
+              cpu: "1000m"
+
+---
+# -------------------------------------------------------------
+# 3. Service (Load Balancer) for Jigsaw Game Service
+# -------------------------------------------------------------
+apiVersion: v1
+kind: Service
+metadata:
+  name: jigsaw-game-service
+spec:
+  type: LoadBalancer # Exposes the service externally
+  selector:
+    app: jigsaw-game-service
+  ports:
+    - port: 80
+      targetPort: 8080

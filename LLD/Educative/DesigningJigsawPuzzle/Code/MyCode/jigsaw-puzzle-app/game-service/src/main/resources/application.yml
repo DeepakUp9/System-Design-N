@@ -1,0 +1,53 @@
+# --------------------------------------------------------------------------------
+# PRODUCTION CONFIGURATION: PostgreSQL, JPA, and Flyway
+# --------------------------------------------------------------------------------
+spring:
+  application:
+    name: jigsaw-game-service
+
+  # 1. JPA (Hibernate) Configuration
+  jpa:
+    hibernate:
+      ddl-auto: none # CRITICAL: Disable automatic schema generation in production.
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        jdbc:
+          batch_size: 50 # Performance tuning for bulk operations
+
+  # 2. Database Connection (PostgreSQL)
+  datasource:
+    url: jdbc:postgresql://localhost:5432/jigsaw_db # Assumes local PostgreSQL instance
+    username: jigsaw_user # Replace with secure production credentials
+    password: secure_password
+    driver-class-name: org.postgresql.Driver
+    # Hikari Connection Pool settings (standard for production)
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      idle-timeout: 30000
+      pool-name: JigsawPool
+
+  # 3. Flyway Migration Tool Configuration
+  flyway:
+    enabled: true
+    locations: classpath:db/migration # Points to where the SQL scripts are stored
+    baseline-on-migrate: true # Important for starting Flyway on an existing database
+    check-location: true
+
+  # 4. Redis Configuration (Caching)
+  data:
+    redis:
+      host: localhost # Will be replaced by Kubernetes Service name (e.g., redis-cache)
+      port: 6379
+
+  # Configure Spring Caching Abstraction
+  cache:
+    type: redis
+    # Cache name for our game state
+    cache-names:
+      - game-state-cache
+
+server:
+  port: 8080
