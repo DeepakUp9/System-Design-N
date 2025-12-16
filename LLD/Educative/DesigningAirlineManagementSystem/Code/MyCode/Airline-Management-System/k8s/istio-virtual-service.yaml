@@ -1,0 +1,15 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: reservation-retry-policy
+spec:
+  hosts:
+    - reservation-service
+  http:
+    - route:
+        - destination:
+            host: reservation-service
+      retries:
+        attempts: 3
+        perTryTimeout: 2s
+        retryOn: gateway-error,connect-failure,refused-stream

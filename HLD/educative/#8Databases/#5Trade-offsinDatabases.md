@@ -399,3 +399,13 @@ When we compare the three approaches, the **third approach provides us the least
 We didn't calculate filtering at site A because the number of rows will be much larger, and hence data volume will be more than the third case (filtering at the site B and then fetching data). 
 
 This example shows that **careful query optimization is also critical in the distributed database**.
+
+### Conclusion
+Data distribution (vertical and horizontal sharding) across multiple nodes aims to improve the following features, considering that the queries are optimized:  
+
+* Reliability (fault-tolerance)  
+* Performance  
+* Balanced storage capacity and dollar costs  
+
+Both centralized and distributed databases have their pros and cons. We should choose them according to the needs of our application.  
+

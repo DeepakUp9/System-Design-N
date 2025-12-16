@@ -1,0 +1,10 @@
+enum FlightStatus {
+  ACTIVE,
+  SCHEDULED,
+  DELAYED,
+  LANDED,
+  DEPARTED,
+  CANCELED,
+  DIVERTED,
+  UNKNOWN
+}

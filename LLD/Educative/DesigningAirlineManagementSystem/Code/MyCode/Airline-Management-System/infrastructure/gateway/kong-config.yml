@@ -1,0 +1,19 @@
+_format_version: "1.1"
+services:
+  - name: airline-reservation-service
+    url: http://reservation-service.prod.svc.cluster.local:8080
+    routes:
+      - name: reservation-route
+        paths:
+          - /api/v1/reservations
+    plugins:
+      - name: rate-limiting
+        config:
+          second: 10
+          hour: 1000
+          policy: redis
+          redis_host: redis-master.infra.svc.cluster.local
+      - name: jwt
+        config:
+          key_claim_name: sub
+          secret_is_base64: true
