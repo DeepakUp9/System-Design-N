@@ -1,0 +1,45 @@
+# Development Dockerfile with hot reload and debugging
+FROM eclipse-temurin:21-jdk-alpine
+
+# Install development tools
+RUN apk add --no-cache \
+    maven \
+    git \
+    curl \
+    bash \
+    htop \
+    vim \
+    && rm -rf /var/cache/apk/*
+
+# Create app user
+RUN addgroup -g 1001 -S appgroup && \
+    adduser -u 1001 -S appuser -G appgroup
+
+WORKDIR /app
+
+# Copy Maven files
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+
+# Download dependencies
+RUN ./mvnw dependency:go-offline -B --no-transfer-progress
+
+# Copy source code
+COPY src ./src
+
+# Create log directory
+RUN mkdir -p /app/logs && \
+    chown -R appuser:appgroup /app
+
+# Switch to non-root user
+USER appuser
+
+# Expose ports for app and debugging
+EXPOSE 8080 5005
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD curl -f http://localhost:8080/actuator/health || exit 1
+
+# Default command with development profile
+CMD ["./mvnw", "spring-boot:run", "-Dspring-boot.run.profiles=dev,docker", "-Dspring-boot.run.jvmArguments=-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=*:5005"]

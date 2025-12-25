@@ -1,0 +1,84 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: espn-cricinfo-config
+  labels:
+    app: espn-cricinfo
+data:
+  application-k8s.yml: |
+    spring:
+      profiles:
+        active: k8s
+      datasource:
+        hikari:
+          maximum-pool-size: 20
+          minimum-idle: 5
+          connection-timeout: 20000
+          idle-timeout: 300000
+          max-lifetime: 1200000
+      jpa:
+        hibernate:
+          ddl-auto: validate
+        properties:
+          hibernate:
+            dialect: org.hibernate.dialect.PostgreSQLDialect
+            jdbc:
+              batch_size: 25
+            order_inserts: true
+            order_updates: true
+            jdbc:
+              batch_versioned_data: true
+      kafka:
+        producer:
+          acks: all
+          retries: 3
+          batch-size: 16384
+          linger-ms: 5
+          buffer-memory: 33554432
+        consumer:
+          group-id: espn-cricinfo-consumer
+          auto-offset-reset: earliest
+          enable-auto-commit: false
+      redis:
+        timeout: 2000ms
+        lettuce:
+          pool:
+            max-active: 20
+            max-idle: 10
+            min-idle: 5
+    management:
+      endpoints:
+        web:
+          exposure:
+            include: health,info,metrics,prometheus
+      endpoint:
+        health:
+          show-details: when-authorized
+      metrics:
+        export:
+          prometheus:
+            enabled: true
+    logging:
+      level:
+        com.espn.cricinfo: INFO
+        org.springframework.security: DEBUG
+      pattern:
+        console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+        file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    cricinfo:
+      security:
+        jwt:
+          expiration: 86400000  # 24 hours
+      cache:
+        match-ttl: 3600
+        player-ttl: 7200
+        team-ttl: 86400
+      kafka:
+        topics:
+          match-events: match-events
+          ball-events: ball-events
+          live-scoring: live-scoring
+      database:
+        max-query-time: 5000
+      monitoring:
+        enable-detailed-metrics: true

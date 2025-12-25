@@ -1,0 +1,108 @@
+# Compiled class files
+*.class
+
+# Log files
+*.log
+logs/
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+replay_pid*
+
+# Eclipse
+.project
+.classpath
+.settings/
+bin/
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# NetBeans
+nb-configuration.xml
+
+# Visual Studio Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Gradle
+.gradle
+build/
+
+# Spring Boot
+spring.log
+
+# Database
+*.db
+*.sqlite
+
+# Environment files
+.env
+.env.local
+.env.production
+
+# Application logs
+logs/
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Docker
+.dockerignore
+
+# Kubernetes
+*.yaml.bak
+
+# Test coverage
+jacoco/
+coverage/
+
+# Node modules (if any frontend)
+node_modules/
+
+# Secrets and credentials
+secrets/
+*.key
+*.pem
+*.crt
+*.keytab
+
+# Backup files
+*.bak
+*.backup
+*.orig

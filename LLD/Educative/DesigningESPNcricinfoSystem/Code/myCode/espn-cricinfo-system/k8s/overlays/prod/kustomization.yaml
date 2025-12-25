@@ -1,0 +1,42 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+bases:
+  - ../../base
+
+patchesStrategicMerge:
+  - deployment-patch.yaml
+  - service-patch.yaml
+
+patchesJson6902:
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: espn-cricinfo-app
+    path: deployment-resources-patch.yaml
+
+images:
+  - name: espn-cricinfo
+    newTag: v1.0.0-prod
+
+configMapGenerator:
+  - name: espn-cricinfo-config
+    behavior: replace
+    files:
+      - application-prod.yml
+
+secretGenerator:
+  - name: db-secret
+    literals:
+      - username=prod_user
+      - password=prod_password_placeholder
+      - url=jdbc:postgresql://espn-cricinfo-postgres:5432/cricinfo_prod
+  - name: jwt-secret
+    literals:
+      - secret=prod_jwt_secret_placeholder
+
+resources:
+  - network-policy.yaml
+  - pdb.yaml
+  - certificate.yaml

@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: espn-cricinfo-app
+spec:
+  replicas: 5
+  template:
+    spec:
+      containers:
+      - name: app
+        resources:
+          requests:
+            memory: "1Gi"
+            cpu: "500m"
+          limits:
+            memory: "2Gi"
+            cpu: "1000m"
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: "prod,k8s"
+        - name: JAVA_OPTS
+          value: "-XX:+UseContainerSupport -XX:MaxRAMPercentage=80.0 -XX:+UseG1GC -XX:+OptimizeStringConcat -XX:+UseCompressedOops -Djava.security.egd=file:/dev/./urandom"
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: node-type
+                operator: In
+                values:
+                - application
+                - high-performance
