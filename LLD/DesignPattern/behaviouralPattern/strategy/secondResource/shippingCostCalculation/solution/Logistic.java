@@ -1,4 +1,4 @@
-package LLD.DesignPattern.behaviouralPattern.strategy.secondResource.shippingCostCalculation.solution;
+package DesignPattern.behaviouralPattern.strategy.secondResource.shippingCostCalculation.solution;
 
 interface ShippingStrategy {
     double calculateShippingCost(Order order);
@@ -28,6 +28,7 @@ class OvernightShippingStrategy implements ShippingStrategy {
     }
 }
 
+//context class 
 class ShippingCostCalculator {
     private ShippingStrategy strategy;
 

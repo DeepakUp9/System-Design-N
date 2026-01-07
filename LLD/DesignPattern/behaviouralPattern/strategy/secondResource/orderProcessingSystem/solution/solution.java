@@ -1,4 +1,4 @@
-package LLD.DesignPattern.behaviouralPattern.strategy.secondResource.orderProcessingSystem.solution;
+package DesignPattern.behaviouralPattern.strategy.secondResource.orderProcessingSystem.solution;
 
 interface DiscountStrategy {
     double applyDiscount(double amount);

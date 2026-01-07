@@ -1,4 +1,4 @@
-package LLD.DesignPattern.creationalPattern.singleton.secondResource.basicSingleton.solution;
+package DesignPattern.creationalPattern.singleton.secondResource.basicSingleton.solution;
 
 // Lazy Initialization Singleton with Double-Checked Locking
 class CardManufacturingSingletonLazy {

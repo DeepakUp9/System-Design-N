@@ -1,4 +1,4 @@
-package LLD.DesignPattern.creationalPattern.singleton.firstResource.lazyInitialization;
+package DesignPattern.creationalPattern.singleton.firstResource.lazyInitialization;
 
 public class SingletonLaxy {
     private static SingletonLaxy singleton;

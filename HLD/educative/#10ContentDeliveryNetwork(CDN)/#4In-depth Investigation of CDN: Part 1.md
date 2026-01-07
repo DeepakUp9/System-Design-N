@@ -227,6 +227,9 @@ Netflix extends this with **byte-range URLs** — allowing even finer control ov
 
 This ensures smooth playback and optimal bandwidth usage.
 
+
+<span style="background-color: yellow; color: blue;">in depth(Dash), <a href="./deapth/DASH.md">click here</a></span>
+
 ## 🏗️ Multi-Tier CDN Architecture
 
 Now let's talk about how content flows through a CDN network.

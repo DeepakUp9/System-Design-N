@@ -1,4 +1,4 @@
-package LLD.DesignPattern.creationalPattern.factory.secondResource.simpleFactory.basicFactory.solution;
+package DesignPattern.creationalPattern.factory.secondResource.simpleFactory.basicFactory.solution;
 
 interface Vehicle {
     void move();

@@ -1,4 +1,4 @@
-package LLD.DesignPattern.creationalPattern.factory.secondResource.simpleFactory.factoryWithDependencyInjection.solution;
+package DesignPattern.creationalPattern.factory.secondResource.simpleFactory.factoryWithDependencyInjection.solution;
 
 // Step 1: Logger Interface
 interface Logger {

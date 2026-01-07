@@ -1,4 +1,4 @@
-package LLD.DesignPattern.creationalPattern.singleton.firstResource.eagerInitialization;
+package DesignPattern.creationalPattern.singleton.firstResource.eagerInitialization;
 
 public class SingletonEager {
     private static SingletonEager singleton = new SingletonEager();
@@ -16,10 +16,12 @@ class client{
     SingletonEager obj =  SingletonEager.getSingleton();
     System.out.println(obj.hashCode());
 
+    
     SingletonEager obj2 =  SingletonEager.getSingleton();
     System.out.println(obj2.hashCode());
 
     //it will give same hashCode i.e same object is creating while calling two times 
   }
 }
+
 

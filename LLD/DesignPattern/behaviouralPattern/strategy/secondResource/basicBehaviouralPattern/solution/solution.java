@@ -1,4 +1,4 @@
-package LLD.DesignPattern.behaviouralPattern.strategy.secondResource.basicBehaviouralPattern.solution;
+package DesignPattern.behaviouralPattern.strategy.secondResource.basicBehaviouralPattern.solution;
 
 interface PaymentStrategy{
     void pay();
