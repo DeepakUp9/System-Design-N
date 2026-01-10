@@ -101,3 +101,6 @@ Examples in a parking lot system:
 Here is the use case diagram of the parking lot system:
 
 ![The use case diagram of the parking lot system](Theusecasediagramparkinglotsystem.png)
+
+
+<span style="background-color: yellow; color: blue;">in depth(Use Case Diagram for the Parking Lot System), <a href="./deapth/Use-Case-Diagram-Parking-Lot-System.md">click here</a></span>

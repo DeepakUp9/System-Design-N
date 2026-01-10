@@ -184,3 +184,41 @@ Good alerting systems balance between:
 | Storage | Medical records (history) |
 
 A healthy system, like a healthy body, needs constant observation.
+
+The following is the formatted Markdown version of your text:
+
+---
+
+![alt text](CPU-utilization-processes.png)
+
+## Linux Process Monitoring with `top`
+
+We use the **top** command to view Linux processes. Running this command opens an interactive view of the running system containing a summary of the system and a list of processes or threads.
+
+### Interface Breakdown
+
+The default view consists of the following sections:
+
+* **System Summary:** Located at the very top, this displays how long the machine has been turned on, how many users are logged in, and the average load on the machine for the past few minutes.
+* **Task States:** The next line shows the state (running, sleeping, or stopped) of tasks running on the machine.
+* **CPU Consumption:** Below the tasks, you will find the specific CPU usage values.
+* **Memory Overview:** Lastly, there is an overview of physical memory, indicating how much is free, used, buffered, or available.
+
+---
+
+### Hands-on: Observing CPU Usage Changes
+
+Follow these steps to see a change in the CPU usage:
+
+1. **Quit** the current view by entering `q` in the terminal.
+2. **Execute a background script** by running:
+```bash
+nohup ./script.sh &>/dev/null &
+
+```
+
+
+*Note: This script contains an infinite loop and will execute in the background.*
+3. **Run the `top` command** again to observe the increase in CPU usage.
+
+---
