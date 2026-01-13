@@ -423,7 +423,7 @@ Secondary1   Secondary2       Secondary3   Secondary4
 - **Rules and alerts** make the system proactive, not reactive
 - **Hierarchical monitoring** avoids bottlenecks and supports global scaling
 
-![monitoring systems push the data to the global monitoring system](monitoring-systems-push-data-global-monitoring-system.png)
+
 
 ![The data center monitoring systems push the data to the global monitoring system](data-center-monitoring-systems-push-data-global.png)
 
