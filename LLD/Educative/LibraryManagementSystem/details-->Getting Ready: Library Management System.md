@@ -14,7 +14,6 @@ LMS also supports maintaining the physical library. The user can keep track of a
 * Handling book borrowing, returning, and reservation workflows.
 * Managing user roles (librarian, member) and their permissions.
 * Supporting fine calculation and renewal processes for overdue and renewed books.
-* Supporting fine calculation and renewal processes for overdue and renewed books.
 
 >  **Note:** This system model can be adapted for academic, public, or private libraries and can support various library policies (such as special collections, inter-library loans, or different user types).
 
