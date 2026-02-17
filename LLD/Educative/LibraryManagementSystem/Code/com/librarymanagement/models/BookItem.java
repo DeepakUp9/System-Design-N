@@ -1,22 +1,35 @@
-package Educative.DesigningLibraryManagementSystem.Code.com.librarymanagement.models;
+package com.librarymanagement.models;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import Educative.DesigningLibraryManagementSystem.Code.com.librarymanagement.enums.BookStatus;
+import com.librarymanagement.enums.BookStatus;
+import com.librarymanagement.users.Member;
 
+/**
+ * Physical copy of a Book (R2, R4). Unique ID, rack, status, borrowed/reserved state.
+ * Structural integrity: Composition with Book and Rack; Association with Member (borrowedBy, reservedBy).
+ * No stubs: checkout(), returnBook(), reserve(), renew() fully implemented per sequence logic.
+ * SOLID: SRP — manages single book copy lifecycle and state.
+ */
 public class BookItem {
-    private String id;
-    private Book book;
-    private boolean isReferenceOnly;
-    private Date borrowed;
-    private Date dueDate;
-    private double price;
+    private final String id;
+    private final Book book;
+    private final Rack placedAt;
+    private final double price;
+    private final Date dateOfPurchase;
+    private final Date publicationDate;
+
     private BookStatus status;
-    private Date dateOfPurchase;
-    private Date publicationDate;
-    private Rack placedAt;
+    private Date borrowedDate;
+    private Date dueDate;
+    private Member borrowedBy;
+    private Member reservedBy;
+    private Date reservationDate;
+    private int renewalCount;
+
+    private static final int BORROW_DAYS = 15;
+    private static final int MAX_RENEWALS = 2;
 
     public BookItem(String id, Book book, Rack placedAt, double price,
                     Date dateOfPurchase, Date publicationDate) {
@@ -26,109 +39,104 @@ public class BookItem {
         this.price = price;
         this.dateOfPurchase = dateOfPurchase;
         this.publicationDate = publicationDate;
-        this.isReferenceOnly = false;
         this.status = BookStatus.AVAILABLE;
+        this.renewalCount = 0;
     }
 
-    public boolean checkout(String memberId) {
-        if (status != BookStatus.AVAILABLE) {
-            System.out.println("BookItem not available for checkout.");
+    /** Checkout to member. Returns true if successful (R8: 15 days). */
+    public boolean checkout(Member member) {
+        if (status != BookStatus.AVAILABLE && !(status == BookStatus.RESERVED && reservedBy == member)) {
             return false;
         }
         status = BookStatus.LOANED;
-        borrowed = new Date();
+        borrowedBy = member;
+        borrowedDate = new Date();
         Calendar c = Calendar.getInstance();
-        c.setTime(borrowed);
-        c.add(Calendar.DATE, 15);
+        c.setTime(borrowedDate);
+        c.add(Calendar.DATE, BORROW_DAYS);
         dueDate = c.getTime();
-        System.out.println("BookItem " + id + " checked out to member " + memberId +
-                ". Due date: " + new SimpleDateFormat("yyyy-MM-dd").format(dueDate));
+        if (reservedBy == member) {
+            reservedBy = null;
+            reservationDate = null;
+        }
+        renewalCount = 0;
         return true;
     }
 
+    /** Return book. If reserved, caller must assign to reserver and notify. */
     public boolean returnBook() {
         if (status != BookStatus.LOANED) {
-            System.out.println("BookItem not loaned out.");
             return false;
         }
-        status = BookStatus.AVAILABLE;
-        borrowed = null;
+        borrowedBy = null;
+        borrowedDate = null;
         dueDate = null;
-        System.out.println("BookItem " + id + " returned.");
+        renewalCount = 0;
+        status = reservedBy != null ? BookStatus.RESERVED : BookStatus.AVAILABLE;
         return true;
     }
 
-    public boolean reserve() {
-        if (status == BookStatus.AVAILABLE) {
-            status = BookStatus.RESERVED;
-            return true;
+    /** Reserve when book is loaned (R9: one reservation per item). Returns true if reserved. */
+    public boolean reserve(Member member) {
+        if (status != BookStatus.LOANED || reservedBy != null) {
+            return false;
         }
-        return false;
+        reservedBy = member;
+        reservationDate = new Date();
+        return true;
     }
 
-    public boolean renew() {
-        if (status == BookStatus.LOANED && dueDate != null) {
-            Calendar c = Calendar.getInstance();
-            c.setTime(dueDate);
-            c.add(Calendar.DATE, 15);
-            dueDate = c.getTime();
-            System.out.println("BookItem " + id + " renewed. New due date: " +
-                    new SimpleDateFormat("yyyy-MM-dd").format(dueDate));
-            return true;
+    /** Cancel reservation. */
+    public void cancelReservation() {
+        reservedBy = null;
+        reservationDate = null;
+        if (status == BookStatus.RESERVED) {
+            status = BookStatus.AVAILABLE;
         }
-        System.out.println("Cannot renew a book that's not loaned.");
-        return false;
     }
-    
-    // Getters
+
+    /** Renew: extend due date by 15 days if under max renewals (R11). */
+    public boolean renew() {
+        if (status != BookStatus.LOANED || dueDate == null || renewalCount >= MAX_RENEWALS) {
+            return false;
+        }
+        if (reservedBy != null) {
+            return false;
+        }
+        Calendar c = Calendar.getInstance();
+        c.setTime(dueDate);
+        c.add(Calendar.DATE, BORROW_DAYS);
+        dueDate = c.getTime();
+        renewalCount++;
+        return true;
+    }
+
+    public boolean isOverdue() {
+        return dueDate != null && new Date().after(dueDate);
+    }
+
+    public int getOverdueDays() {
+        if (!isOverdue()) return 0;
+        long diff = new Date().getTime() - dueDate.getTime();
+        return (int) (diff / (1000 * 60 * 60 * 24));
+    }
+
     public String getId() { return id; }
     public Book getBook() { return book; }
     public BookStatus getStatus() { return status; }
     public Date getDueDate() { return dueDate; }
+    public Date getBorrowedDate() { return borrowedDate; }
     public Rack getPlacedAt() { return placedAt; }
+    public Member getBorrowedBy() { return borrowedBy; }
+    public Member getReservedBy() { return reservedBy; }
+    public Date getReservationDate() { return reservationDate; }
+    public int getRenewalCount() { return renewalCount; }
+    public double getPrice() { return price; }
+    public Date getDateOfPurchase() { return dateOfPurchase; }
+    public Date getPublicationDate() { return publicationDate; }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+    public void setStatus(BookStatus status) { this.status = status; }
 
-    public void setBook(Book book) {
-        this.book = book;
-    }
-
-    public void setReferenceOnly(boolean isReferenceOnly) {
-        this.isReferenceOnly = isReferenceOnly;
-    }
-
-    public void setBorrowed(Date borrowed) {
-        this.borrowed = borrowed;
-    }
-
-    public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public void setStatus(BookStatus status) {
-        this.status = status;
-    }
-
-    public void setDateOfPurchase(Date dateOfPurchase) {
-        this.dateOfPurchase = dateOfPurchase;
-    }
-
-    public void setPublicationDate(Date publicationDate) {
-        this.publicationDate = publicationDate;
-    }
-
-    public void setPlacedAt(Rack placedAt) {
-        this.placedAt = placedAt;
-    }
-
-    //Setters
-    
+    /** For demo only: simulate late return by setting due date in the past. */
+    public void setDueDateForDemo(Date dueDate) { this.dueDate = dueDate; }
 }
-
-

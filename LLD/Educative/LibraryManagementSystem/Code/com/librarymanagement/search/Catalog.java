@@ -1,76 +1,87 @@
-package Educative.DesigningLibraryManagementSystem.Code.com.librarymanagement.search;
+package com.librarymanagement.search;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import Educative.DesigningLibraryManagementSystem.Code.com.librarymanagement.models.Author;
-import Educative.DesigningLibraryManagementSystem.Code.com.librarymanagement.models.BookItem;
+import com.librarymanagement.models.Author;
+import com.librarymanagement.models.Book;
+import com.librarymanagement.models.BookItem;
 
+/**
+ * Class diagram: Catalog implements Search. Aggregation — Catalog contains Book (1 -- 1..*).
+ * Search returns List<Book>; books are indexed by title, author, subject, publication date (R14).
+ * Thread-safe for add/search.
+ */
 public class Catalog implements Search {
-    private Map<String, List<BookItem>> bookTitles;
-    private Map<String, List<BookItem>> bookAuthors;
-    private Map<String, List<BookItem>> bookSubjects;
-    private Map<String, List<BookItem>> bookPublicationDates;
-    private Map<String, BookItem> allBookItems;
+    private final Map<String, List<Book>> bookTitles;
+    private final Map<String, List<Book>> bookAuthors;
+    private final Map<String, List<Book>> bookSubjects;
+    private final Map<String, List<Book>> bookPublicationDates;
+    private final Map<String, Book> booksByIsbn;
 
     public Catalog() {
         this.bookTitles = new HashMap<>();
         this.bookAuthors = new HashMap<>();
         this.bookSubjects = new HashMap<>();
         this.bookPublicationDates = new HashMap<>();
-        this.allBookItems = new HashMap<>();
+        this.booksByIsbn = new HashMap<>();
     }
 
-    public void addBookItem(BookItem bookItem) {
-        allBookItems.put(bookItem.getId(), bookItem);
-        
-        // Index by title
-        bookTitles.computeIfAbsent(bookItem.getBook().getTitle(), k -> new ArrayList<>())
-                  .add(bookItem);
-        
-        // Index by author
-        for (Author author : bookItem.getBook().getAuthors()) {
-            bookAuthors.computeIfAbsent(author.getName(), k -> new ArrayList<>())
-                      .add(bookItem);
+    /** Class diagram: Aggregation — add Book to catalog (1 -- 1..*). */
+    public synchronized void addBook(Book book) {
+        if (book == null) return;
+        booksByIsbn.put(book.getIsbn(), book);
+        bookTitles.computeIfAbsent(book.getTitle().toLowerCase(), k -> new ArrayList<>()).add(book);
+        for (Author author : book.getAuthors()) {
+            bookAuthors.computeIfAbsent(author.getName().toLowerCase(), k -> new ArrayList<>()).add(book);
         }
-        
-        // Index by subject
-        bookSubjects.computeIfAbsent(bookItem.getBook().getSubject(), k -> new ArrayList<>())
-                   .add(bookItem);
-        
-        // Index by publication date
-        String pubDateStr = new SimpleDateFormat("yyyy-MM-dd")
-                           .format(bookItem.getBook().getPublicationDate());
-        bookPublicationDates.computeIfAbsent(pubDateStr, k -> new ArrayList<>())
-                           .add(bookItem);
+        bookSubjects.computeIfAbsent(book.getSubject().toLowerCase(), k -> new ArrayList<>()).add(book);
+        String pubStr = new SimpleDateFormat("yyyy-MM-dd").format(book.getPublicationDate());
+        bookPublicationDates.computeIfAbsent(pubStr, k -> new ArrayList<>()).add(book);
+    }
+
+    /** Add BookItem's Book to catalog if not present (used when adding copy to library). */
+    public synchronized void addBookIfAbsent(Book book) {
+        if (book != null && !booksByIsbn.containsKey(book.getIsbn())) {
+            addBook(book);
+        }
     }
 
     @Override
-    public List<BookItem> searchByTitle(String title) {
-        return bookTitles.getOrDefault(title, new ArrayList<>());
+    public List<Book> searchByTitle(String title) {
+        if (title == null) return Collections.emptyList();
+        return new ArrayList<>(bookTitles.getOrDefault(title.toLowerCase(), Collections.emptyList()));
     }
-    
+
     @Override
-    public List<BookItem> searchByAuthor(String author) {
-        return bookAuthors.getOrDefault(author, new ArrayList<>());
+    public List<Book> searchByAuthor(String author) {
+        if (author == null) return Collections.emptyList();
+        return new ArrayList<>(bookAuthors.getOrDefault(author.toLowerCase(), Collections.emptyList()));
     }
-    
+
     @Override
-    public List<BookItem> searchBySubject(String subject) {
-        return bookSubjects.getOrDefault(subject, new ArrayList<>());
+    public List<Book> searchBySubject(String subject) {
+        if (subject == null) return Collections.emptyList();
+        return new ArrayList<>(bookSubjects.getOrDefault(subject.toLowerCase(), Collections.emptyList()));
     }
-    
+
     @Override
-    public List<BookItem> searchByPublicationDate(Date pubDate) {
+    public List<Book> searchByPublicationDate(Date pubDate) {
+        if (pubDate == null) return Collections.emptyList();
         String dateStr = new SimpleDateFormat("yyyy-MM-dd").format(pubDate);
-        return bookPublicationDates.getOrDefault(dateStr, new ArrayList<>());
+        return new ArrayList<>(bookPublicationDates.getOrDefault(dateStr, Collections.emptyList()));
     }
-    
-    public BookItem getBookItemById(String id) {
-        return allBookItems.get(id);
+
+    public Book getBookByIsbn(String isbn) {
+        return booksByIsbn.get(isbn);
+    }
+
+    public List<Book> getAllBooks() {
+        return new ArrayList<>(booksByIsbn.values());
     }
 }

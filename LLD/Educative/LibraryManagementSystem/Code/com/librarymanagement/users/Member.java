@@ -1,83 +1,65 @@
-package Educative.DesigningLibraryManagementSystem.Code.com.librarymanagement.users;
+package com.librarymanagement.users;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import Educative.DesigningLibraryManagementSystem.Code.com.librarymanagement.models.BookItem;
-import Educative.DesigningLibraryManagementSystem.Code.com.librarymanagement.models.LibraryCard;
-import Educative.DesigningLibraryManagementSystem.Code.com.librarymanagement.models.Person;
-import Educative.DesigningLibraryManagementSystem.Code.com.librarymanagement.services.Fine;
+import com.librarymanagement.models.BookItem;
+import com.librarymanagement.models.LibraryCard;
+import com.librarymanagement.models.Person;
 
+/**
+ * Member (R5, R7): can borrow max 10 books, reserve, renew, return, pay fines.
+ * SOLID: SRP — member state and borrowing limits; LSP — substitutable for User.
+ * R7: max 10 books enforced in canBorrowMore() and Library.issueBook().
+ */
 public class Member extends User {
-    private Date dateOfMembership;
-    private int totalBooksCheckedOut;
-    private List<BookItem> booksBorrowed;
+    private static final int MAX_BOOKS_ALLOWED = 10;
+
+    private final Date dateOfMembership;
+    private final List<BookItem> booksBorrowed;
     private double finesDue;
 
     public Member(String id, String password, Person person, LibraryCard card) {
         super(id, password, person, card);
         this.dateOfMembership = new Date();
-        this.totalBooksCheckedOut = 0;
         this.booksBorrowed = new ArrayList<>();
         this.finesDue = 0.0;
     }
 
-    public boolean reserveBookItem(BookItem bookItem) {
-        if (bookItem.reserve()) {
-            System.out.println("BookItem " + bookItem.getId() + " reserved by member " + getId());
-            return true;
-        }
-        System.out.println("Cannot reserve book; it is not available.");
-        return false;
+    public int getTotalBooksCheckedOut() {
+        return booksBorrowed.size();
     }
 
-    public boolean checkoutBookItem(BookItem bookItem) {
-        if (totalBooksCheckedOut >= 10) {
-            System.out.println("Book limit reached.");
-            return false;
-        }
-        if (bookItem.checkout(getId())) {
-            booksBorrowed.add(bookItem);
-            totalBooksCheckedOut++;
-            System.out.println("Member " + getId() + " checked out BookItem " + bookItem.getId());
-            return true;
-        }
-        return false;
+    public boolean canBorrowMore() {
+        return getTotalBooksCheckedOut() < MAX_BOOKS_ALLOWED && getFinesDue() == 0
+                && getStatus() == com.librarymanagement.enums.AccountStatus.ACTIVE;
     }
 
-    public boolean returnBookItem(BookItem bookItem) {
-        if (!booksBorrowed.contains(bookItem)) {
-            System.out.println("Book not checked out by member.");
-            return false;
+    public void addBorrowedBook(BookItem item) {
+        if (!booksBorrowed.contains(item)) {
+            booksBorrowed.add(item);
         }
-        int lateDays = 0;
-        if (bookItem.getDueDate() != null) {
-            long diffMs = new Date().getTime() - bookItem.getDueDate().getTime();
-            lateDays = (int) (diffMs / (1000 * 60 * 60 * 24));
-        }
-        if (lateDays > 0) {
-            double fine = Fine.collectFine(getId(), lateDays);
-            finesDue += fine;
-            System.out.printf("Fine of $%.2f applied for %d late days.\n", fine, lateDays);
-        }
-        bookItem.returnBook();
-        booksBorrowed.remove(bookItem);
-        totalBooksCheckedOut--;
-        return true;
     }
 
-    public boolean renewBookItem(BookItem bookItem) {
-        if (booksBorrowed.contains(bookItem)) {
-            return bookItem.renew();
-        }
-        System.out.println("This member has not checked out the book.");
-        return false;
+    public void removeBorrowedBook(BookItem item) {
+        booksBorrowed.remove(item);
     }
-    
-    // Getters
+
+    public void addFine(double amount) {
+        this.finesDue += amount;
+    }
+
+    public void payFine(double amount) {
+        if (amount >= finesDue) {
+            finesDue = 0;
+        } else {
+            finesDue -= amount;
+        }
+    }
+
+    public Date getDateOfMembership() { return dateOfMembership; }
+    public List<BookItem> getBooksBorrowed() { return Collections.unmodifiableList(booksBorrowed); }
     public double getFinesDue() { return finesDue; }
-    public List<BookItem> getBooksBorrowed() { return new ArrayList<>(booksBorrowed); }
 }
-
-

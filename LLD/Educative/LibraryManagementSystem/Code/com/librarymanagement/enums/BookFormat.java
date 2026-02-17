@@ -1,5 +1,8 @@
-package Educative.DesigningLibraryManagementSystem.Code.com.librarymanagement.enums;
+package com.librarymanagement.enums;
 
+/**
+ * Physical/digital format of a book (R3).
+ */
 public enum BookFormat {
     HARDCOVER,
     PAPERBACK,

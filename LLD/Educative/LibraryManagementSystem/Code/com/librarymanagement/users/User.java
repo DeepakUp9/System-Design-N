@@ -1,15 +1,22 @@
-package Educative.DesigningLibraryManagementSystem.Code.com.librarymanagement.users;
+package com.librarymanagement.users;
 
-import Educative.DesigningLibraryManagementSystem.Code.com.librarymanagement.enums.AccountStatus;
-import Educative.DesigningLibraryManagementSystem.Code.com.librarymanagement.models.LibraryCard;
-import Educative.DesigningLibraryManagementSystem.Code.com.librarymanagement.models.Person;
+import com.librarymanagement.enums.AccountStatus;
+import com.librarymanagement.models.LibraryCard;
+import com.librarymanagement.models.Person;
 
+/**
+ * Abstract User (R5): id, password, Person, LibraryCard, AccountStatus.
+ * Structural integrity: Inheritance — Librarian and Member extend User (LSP: substitutable as User).
+ * Composition: User has-one Person, has-one LibraryCard.
+ * Encapsulation: private fields; protected not used (subclasses use getters).
+ * SOLID: LSP — Member and Librarian can replace User where base behaviour is used.
+ */
 public abstract class User {
-    private String id;
-    private String password;
+    private final String id;
+    private final String password;
     private AccountStatus status;
-    private Person person;
-    private LibraryCard card;
+    private final Person person;
+    private final LibraryCard card;
 
     public User(String id, String password, Person person, LibraryCard card) {
         this.id = id;
@@ -18,17 +25,14 @@ public abstract class User {
         this.card = card;
         this.status = AccountStatus.ACTIVE;
     }
-    
+
     public boolean resetPassword() {
-        System.out.println("Reset password for user " + id);
         return true;
     }
-    
-    // Getters and setters
+
     public String getId() { return id; }
     public AccountStatus getStatus() { return status; }
     public void setStatus(AccountStatus status) { this.status = status; }
     public Person getPerson() { return person; }
     public LibraryCard getCard() { return card; }
 }
-

@@ -1,13 +1,18 @@
-package Educative.DesigningLibraryManagementSystem.Code.com.librarymanagement.search;
+package com.librarymanagement.search;
 
 import java.util.Date;
 import java.util.List;
 
-import Educative.DesigningLibraryManagementSystem.Code.com.librarymanagement.models.BookItem;
+import com.librarymanagement.models.Book;
 
+/**
+ * Search interface (R14): search by title, author, subject, publication date.
+ * Class diagram: Catalog implements Search; Aggregation — Catalog contains Book (1 -- 1..*).
+ * Design pattern: Strategy. SOLID: ISP, DIP.
+ */
 public interface Search {
-    List<BookItem> searchByTitle(String title);
-    List<BookItem> searchByAuthor(String author);
-    List<BookItem> searchBySubject(String subject);
-    List<BookItem> searchByPublicationDate(Date pubDate);
+    List<Book> searchByTitle(String title);
+    List<Book> searchByAuthor(String author);
+    List<Book> searchBySubject(String subject);
+    List<Book> searchByPublicationDate(Date pubDate);
 }

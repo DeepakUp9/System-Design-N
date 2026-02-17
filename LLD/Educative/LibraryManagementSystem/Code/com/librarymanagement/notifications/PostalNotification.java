@@ -1,18 +1,23 @@
-package Educative.DesigningLibraryManagementSystem.Code.com.librarymanagement.notifications;
+package com.librarymanagement.notifications;
 
-import Educative.DesigningLibraryManagementSystem.Code.com.librarymanagement.models.Address;
+import com.librarymanagement.models.Address;
 
+/**
+ * Postal notification (R12): sends to member address.
+ * Design pattern: Template Method — sendNotification() implements channel (postal).
+ * SOLID: LSP — substitutable for Notification.
+ */
 public class PostalNotification extends Notification {
-    private Address address;
-    
+    private final Address address;
+
     public PostalNotification(String notificationId, String content, Address address) {
         super(notificationId, content);
         this.address = address;
     }
-    
+
     @Override
     public boolean sendNotification() {
-        System.out.println("Postal notification to " + address + ": " + getContent());
+        System.out.println("[Postal to " + address + "] " + getContent());
         return true;
     }
 }
