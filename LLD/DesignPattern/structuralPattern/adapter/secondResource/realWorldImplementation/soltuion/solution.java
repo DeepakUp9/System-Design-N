@@ -16,6 +16,12 @@ class MakeTransaction implements NewPaymentGateway {
         System.out.println("Making Transaction via new payment method using card " + card);
     }
 }
+// Existing Old Payment Gateway
+class OldPaymentGateway implements PaymentGateway {
+    public void payWithCard(String card) {
+        System.out.println("Paying via OldPaymentGateway using " + card);
+    }
+}
 
 // Adapter that makes NewPaymentGateway compatible with PaymentGateway
 class PaymentGatewayAdapter implements PaymentGateway {
@@ -32,12 +38,7 @@ class PaymentGatewayAdapter implements PaymentGateway {
     }
 }
 
-// Existing Old Payment Gateway
-class OldPaymentGateway implements PaymentGateway {
-    public void payWithCard(String card) {
-        System.out.println("Paying via OldPaymentGateway using " + card);
-    }
-}
+
 
 // Driver Class
 public class solution {

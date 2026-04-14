@@ -7,7 +7,7 @@ public class SingletonEager {
   
     //Eager way of creation Singleton object 
     public static SingletonEager getSingleton(){
-        return singleton;
+      return singleton;
     }
 }
 

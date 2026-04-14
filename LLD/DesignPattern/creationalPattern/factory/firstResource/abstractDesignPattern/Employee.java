@@ -3,9 +3,7 @@ package LLD.DesignPattern.creationalPattern.factory.firstResource.abstractDesign
 interface Employee{
 
     int salary();
-
     String[] skills();
-
     String name();
 
 }

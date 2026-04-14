@@ -2,9 +2,7 @@ package LLD.DesignPattern.creationalPattern.prototypePattern.secondResource.kjav
 
 abstract class NetworkDevice {
     public abstract NetworkDevice clone();
-
     public abstract void display();
-
     public abstract void update(String newName);
 }
 

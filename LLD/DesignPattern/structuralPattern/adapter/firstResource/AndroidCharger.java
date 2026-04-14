@@ -1,7 +1,5 @@
 package LLD.DesignPattern.structuralPattern.adapter.firstResource;
 
- interface AndroidCharger{
-
-    void chargerAndroidPhone();
-
+interface AndroidCharger{
+  void chargerAndroidPhone();
 }

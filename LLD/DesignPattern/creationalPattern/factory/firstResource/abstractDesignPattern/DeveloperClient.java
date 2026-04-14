@@ -5,7 +5,6 @@ package LLD.DesignPattern.creationalPattern.factory.firstResource.abstractDesign
 public class DeveloperClient{
 
    public static void main(String args[]){
-      //i want to get th android developer 
 
       Employee employee = EmployeeFactory.getEmployee(new AndroidDevFactory());
       System.out.println(employee.salary());

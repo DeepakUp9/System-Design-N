@@ -19,7 +19,7 @@ class Singleton implements Cloneable{
     }
 
   @Override
-  public  Object clone() throws CloneNotSupportedException{
+  public Object clone() throws CloneNotSupportedException{
     return super.clone();
     //solutions return singleton; //same object return 
   }

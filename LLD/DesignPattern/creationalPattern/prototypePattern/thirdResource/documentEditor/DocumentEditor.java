@@ -42,7 +42,4 @@ public class DocumentEditor implements Cloneable{
         return String.format("DocumentEditor [content=%s, header=%s, footer=%s, userAccess=%s]", content, header, footer, userAccess);
     }
 
-    
-
-    
 }
