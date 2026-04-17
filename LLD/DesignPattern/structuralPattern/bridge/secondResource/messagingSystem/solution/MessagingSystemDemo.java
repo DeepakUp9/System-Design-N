@@ -64,7 +64,7 @@ public class MessagingSystemDemo {
         MessageSender smsSender = new SmsSender();
 
         Message msg1 = new TextMessage(emailSender);
-        msg1.writeMessage("Hi, Tanisha here!");
+        msg1.writeMessage("Hi, Deepak here!");
 
         Message msg2 = new AlertMessage(smsSender);
         msg2.writeMessage("⚠️ Server CPU usage at 99%");

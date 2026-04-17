@@ -9,6 +9,6 @@ public class Iphone13{
     }
 
     public void chargerIphone(){
-         appleCharger.chargePhone();
+        appleCharger.chargePhone();
     }
 }

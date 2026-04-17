@@ -33,8 +33,8 @@ class PaymentGatewayAdapter implements PaymentGateway {
     }
 
     public void payWithCard(String card) {
-        System.out.println("Adapting OldPaymentGateway card payment to new system...");
         newPaymentGateway.makeTransaction(card);
+        System.out.println("Adapting OldPaymentGateway card payment to new system...");
     }
 }
 

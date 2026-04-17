@@ -9,7 +9,6 @@ package LLD.DesignPattern.structuralPattern.bridge.secondResource.uiFrameworkDes
 interface Platforms {
     void renderOnclick(String action, boolean onClickStatus);
     void renderOnselect(String action, boolean onSelectStatus);
-
 }
 
 class Window implements Platforms {
@@ -96,7 +95,6 @@ class Button extends UIComponent{
         this.onSelectStatus = true;
         throw new IllegalAccessError("button can't be selected");
     }
-
 }
 
 class Dropdown extends UIComponent{
