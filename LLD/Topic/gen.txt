@@ -1,9 +1,0 @@
-Redis
-Thread 
-Exceptions handling 
-How synchronized works internally 
-implementation of listeners -- > Use an external distributed cache like Redis or a config server with listeners to synchronize state across nodes instead of relying on a Singleton within the JVM only.
-
-
-
-

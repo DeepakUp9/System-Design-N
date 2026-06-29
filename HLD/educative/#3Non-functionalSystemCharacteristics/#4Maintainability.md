@@ -30,7 +30,7 @@ If a component has a maintainability value of 95% for half an hour, the probabil
 We use **MTTR (Mean Time to Repair)** to measure maintainability.
 
 \[
-MTTR = \frac{\text{Total Maintenance Time}}{\text{Total Number of Repairs}}
+MTTR = \frac{{Total Maintenance Time}}/{{Total Number of Repairs}}
 \]
 
 - MTTR is the **average time required** to repair and restore a failed component.  

@@ -1,7 +1,0 @@
-
-In Object-Oriented Programming (OOP) like Java:
-    Data members (fields/attributes) represent the state of an object.
-    Methods represent the behavior of an object — what it can do.
-
-🔹 State → What the object is (data)
-🔹 Behavior → What the object does (actions)

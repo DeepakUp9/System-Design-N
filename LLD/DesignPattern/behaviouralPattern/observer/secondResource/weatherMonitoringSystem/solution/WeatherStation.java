@@ -5,17 +5,11 @@ import java.util.List;
 
 interface WeatherData {
     void addObserver(DisplayObserver displayObserver);
-
     void removeObserver(DisplayObserver displayObserver);
-
     void notifyAllObservers();
-
     void setData(int temp, int humidity, String location);
-
     int getTemperature();
-
     int getHumidity();
-
     String getLocation();
 }
 
@@ -95,9 +89,9 @@ public class WeatherStation {
         weatherData.addObserver(desktopDisplay1);
         weatherData.setData(12, 23, "Delhi");
 
-        System.out.println();
+        // System.out.println();
 
-        weatherData.addObserver(desktopDisplay2);
-        weatherData.setData(30, 40, "Mumbai");
+        // weatherData.addObserver(desktopDisplay2);
+        // weatherData.setData(30, 40, "Mumbai");
     }
 }
