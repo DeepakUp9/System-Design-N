@@ -66,6 +66,79 @@
 
 ---
 
+### 1. Aggregation (A $\diamond$—— B)
+
+In this setup, Class A **has a** reference to Class B, but Class B is created outside of Class A. If Class A is destroyed, Class B still lives.
+
+```java
+// Class B (The independent object)
+class B {
+    private String name;
+
+    public B(String name) {
+        this.name = name;
+    }
+
+    public void display() {
+        System.out.println("Hello from Class B instance: " + name);
+    }
+}
+
+// Class A (The container - Aggregation)
+class A {
+    private B bInstance; // Has-A relationship
+
+    // Class B is passed in from the outside (weaker relationship)
+    public A(B bInstance) {
+        this.bInstance = bInstance;
+    }
+
+    public void performAction() {
+        if (bInstance != null) {
+            bInstance.display();
+        }
+    }
+}
+
+```
+
+---
+
+### 2. Composition (A $\blacklozenge$—— B)
+
+In this setup, Class A **owns** Class B entirely. Class B is instantiated *inside* Class A's constructor. If Class A is destroyed, Class B goes down with it.
+
+```java
+// Class B (The dependent part)
+class B {
+    private String details;
+
+    public B(String details) {
+        this.details = details;
+    }
+
+    public void showDetails() {
+        System.out.println("Class B Part: " + details);
+    }
+}
+
+// Class A (The container - Composition)
+class A {
+    private B bInstance; // Strong Part-Of relationship
+
+    public A(String detailsForB) {
+        // Class B is created internally and managed strictly by Class A
+        this.bInstance = new B(detailsForB);
+    }
+
+    public void operate() {
+        bInstance.showDetails();
+    }
+}
+
+```
+---
+
 ## Summary of Relationships
 
 | Relationship        | UML Notation        | Description                                                                 |
