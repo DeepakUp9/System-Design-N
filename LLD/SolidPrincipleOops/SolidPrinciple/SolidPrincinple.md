@@ -225,3 +225,84 @@ def process_order(total):
 | KISS | Simplest solution that works |
 | YAGNI | Don't build for hypothetical future needs |
 | DRY | One source of truth per piece of knowledge |
+
+---
+---
+---
+
+# SOLID Principles — Short Notes
+
+**SOLID** — 5 OOD principles by Robert C. Martin ("Uncle Bob").
+
+**Without SOLID:** tight coupling, untestable code, duplication, one fix causes more bugs.
+**With SOLID:** loose coupling, less complexity, extensible/maintainable code, modular & testable.
+
+| Letter | Principle | One-liner |
+|---|---|---|
+| **S** | Single Responsibility | A class should have only one reason to change |
+| **O** | Open/Closed | Open for extension, closed for modification |
+| **L** | Liskov Substitution | Subclass objects must be substitutable for superclass objects |
+| **I** | Interface Segregation | Prefer small, client-specific interfaces over fat ones |
+| **D** | Dependency Inversion | Depend on abstractions, not concretions |
+
+---
+
+## S — Single Responsibility Principle (SRP)
+
+"A class should have only one reason to change."
+
+**Example:** `Invoice` class doing price calc + printing + DB storage → violates SRP (3 reasons to change).
+
+**Fix:** Split into `Invoice`, `InvoicePrinter`, `InvoiceStorage` — each with one job.
+
+✅ Smaller, self-explanatory classes → easier maintenance & reuse.
+
+---
+
+## O — Open/Closed Principle (OCP)
+
+"Open for extension, closed for modification." (Bertrand Meyer, 1988)
+
+**Example:** A `volume(Shape)` function with `if/else` per shape type → adding a new shape means editing the function (violation).
+
+**Fix:** Make `Shape` an abstract class with its own `volume()`; `Cuboid`, `Cylinder`, `Cone` extend it and implement their own. `VolumeCalculator` just sums via `sumVolume()` — no changes needed when a new shape is added.
+
+> Achieved via inheritance/interfaces — hence also called **polymorphic OCP**.
+
+---
+
+## L — Liskov Substitution Principle (LSP)
+
+"Subclass objects should be replaceable for superclass objects without breaking the system."
+
+**Violation example:** `Vehicle` has `startEngine()`. `Car extends Vehicle` — fine. But `Bicycle extends Vehicle` — a bicycle has no engine, so overriding `startEngine()` breaks the contract.
+
+**Fix:** Split into `Motorized extends Vehicle` (has `startEngine()`) and `Manual extends Vehicle` (no engine). `Car → Motorized`, `Bicycle → Manual`.
+
+✅ Avoids forcing unrelated behavior into subclasses; keeps hierarchy substitutable.
+
+---
+
+## I — Interface Segregation Principle (ISP)
+
+"No fat interfaces — many small, client-specific ones."
+
+**Violation example:** `Shape` interface has `area()` + `volume()`. `Square`/`Rectangle` (2D) are forced to implement `volume()`, which makes no sense for them.
+
+**Fix:** Split into `TwoDimensionalShape` (`area()`) and `ThreeDimensionalShape` (`area()` + `volume()`). 2D shapes implement only what applies to them.
+
+> Most commonly violated SOLID principle in practice.
+
+---
+
+## D — Dependency Inversion Principle (DIP)
+
+"High-level modules shouldn't depend on low-level modules — both should depend on abstractions."
+
+**Violation example:** `Headmaster` directly knows concrete `Teacher`, `Assistant`, `Helper` classes. Adding a new faculty type (e.g. `Secretary`) forces changes in `Headmaster`.
+
+**Fix:** Introduce abstract `Faculty` parent class. `Headmaster` depends on `Faculty`, not concrete subclasses. New faculty types (e.g. `Secretary extends Faculty`) plug in with zero changes to `Headmaster`.
+
+✅ Decouples modules → flexible, stable, reusable design.
+
+---
